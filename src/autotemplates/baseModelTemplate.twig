@@ -146,6 +146,14 @@ namespace {{ namespace }};
 abstract class Base{{modelname}} extends {{ modelToExtend }} {
     public static $_table = '{{tablename}}';
 
+	/**
+	 * Starting point for all queries
+	 * @return \{{ namespace }}\{{ modelname }};
+	 */
+	public static function model() {
+		return \Granada\Granada::factory('{{ namespace }}\{{ modelname }}');
+	}
+
 {% for field in belongsTo %}
     public function {{field.arvarname}}() {
         return $this->belongs_to('{{field.namespace}}\{{field.modelname}}', '{{field.varname}}');
