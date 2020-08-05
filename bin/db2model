@@ -53,9 +53,9 @@ $plural_tables = [];
 // Override from local config file
 include($configfile);
 
-\Granada\Autobuild::configure('mysql:host=' . $db_host . ';port=' . $db_port . ';dbname=' . $db_name);
-\Granada\Autobuild::configure('username', $db_username);
-\Granada\Autobuild::configure('password', $db_password);
+\Granada\ORM::configure('mysql:host=' . $db_host . ';port=' . $db_port . ';dbname=' . $db_name);
+\Granada\ORM::configure('username', $db_username);
+\Granada\ORM::configure('password', $db_password);
 
 $tables = \Granada\Autobuild::getTables($plural_tables);
 \Granada\Autobuild::setPluralTables($plural_tables);
