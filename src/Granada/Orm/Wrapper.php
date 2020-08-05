@@ -358,6 +358,31 @@ class Wrapper extends ORM {
             }
             $varname = substr($method, 6);
             return $this->where_equal($varname, $parameters);
+        } else if ($method == 'order_by_rand') {
+            return $this->order_by_expr('RAND()');
+        } else if ($method == 'order_by_list') {
+            if ($parameters[1]) {
+                return $this->order_by_expr('FIELD(`' . $parameters[0] . '`,' . implode(',', $parameters[1]) . ')');
+            }
+            return $this;
+        } else if (substr($method, 0, 9) == 'order_by_') {
+            if (substr($method, -13) == '_natural_desc') {
+                $varname = substr($method, 9, -13);
+                return $this->order_by_expr($expression = 'LENGTH(`' . $varname . '`), `' . $varname . '` DESC');
+                return $this->order_by_expr($expression = 'LENGTH(`' . $varname . '`), `' . $varname . '`');
+            }
+            if (substr($method, -12) == '_natural_asc') {
+                $varname = substr($method, 9, -12);
+                return $this->order_by_expr($expression = 'LENGTH(`' . $varname . '`), `' . $varname . '`');
+            }
+            if (substr($method, -5) == '_desc') {
+                $varname = substr($method, 9, -5);
+                return $this->order_by_desc($varname);
+            }
+            if (substr($method, -4) == '_asc') {
+                $varname = substr($method, 9, -4);
+                return $this->order_by_asc($varname);
+            }
         }
         else {
             throw new Exception(" no static $method found or static method 'filter_$method' not defined in ".$this->_class_name);

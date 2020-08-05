@@ -130,16 +130,11 @@
  * @method \{{namespace}}\{{modelname}} defaultFilter() Add a query to get default filter. Use as $items = {{modelname}}::defaultFilter()->find_many();
  * @method array find_pairs(string|null $key, string|null $value) Gets data in array form, as pairs of data for each row in the results. The key and value are the database column to use as the array keys and values
 {% for field in structure %}
- * @method \{{namespace}}\{{modelname}} order_by_{{field.name}}() Add an ORDER BY column ASC clause for {{field.name}}
  * @method \{{namespace}}\{{modelname}} order_by_{{field.name}}_asc() Add an ORDER BY column ASC clause for {{field.name}}
  * @method \{{namespace}}\{{modelname}} order_by_{{field.name}}_desc() Add an ORDER BY column DESC clause for {{field.name}}
  * @method \{{namespace}}\{{modelname}} order_by_{{field.name}}_natural_asc() Add an ORDER BY column ASC clause using natural sorting method for {{field.name}}
  * @method \{{namespace}}\{{modelname}} order_by_{{field.name}}_natural_desc() Add an ORDER BY column DESC clause using natural sorting method for {{field.name}}
 {% endfor %}
- * @method \{{namespace}}\{{modelname}} order_by_desc(string $column_name) Add an ORDER BY column DESC clause
- * @method \{{namespace}}\{{modelname}} order_by_asc(string $column_name) Add an ORDER BY column ASC clause
- * @method \{{namespace}}\{{modelname}} order_by_natural_asc(string $column_name) Add an ORDER BY column ASC clause using natural sorting method
- * @method \{{namespace}}\{{modelname}} order_by_natural_desc(string $column_name) Add an ORDER BY column DESC clause using natural sorting method
  * @method \{{namespace}}\{{modelname}} order_by_rand() Fetch items in a random order. Use sparingly and ensure a LIMIT is placed
  * @method \{{namespace}}\{{modelname}} order_by_expr(string $clause) Add an unquoted expression as an ORDER BY clause
  * @method \{{namespace}}\{{modelname}} order_by_list(string $column_name, integer[] $list) Add an ORDER BY FIELD column clause to make the ordering a specific sequence
