@@ -1,0 +1,78 @@
+#!/usr/bin/env php
+<?php
+
+$autoloadPath = null;
+$autoloadPaths = array(
+	__DIR__ . '/../../../autoload.php',
+	__DIR__ . '/../../vendor/autoload.php',
+	__DIR__ . '/../vendor/autoload.php'
+);
+
+foreach ($autoloadPaths as $file) {
+	if (file_exists($file)) {
+		$autoloadPath = $file;
+		include($autoloadPath);
+		break;
+	}
+}
+
+if (is_null($autoloadPath)) {
+	fwrite(
+		STDERR,
+		'You need to set up the project dependencies using Composer:' . PHP_EOL . PHP_EOL .
+			'    composer install' . PHP_EOL . PHP_EOL .
+			'You can learn all about Composer on https://getcomposer.org/.' . PHP_EOL
+	);
+	die(1);
+}
+
+define('BASE_FOLDER', dirname(dirname(dirname(__DIR__))));
+
+if (!array_key_exists(1, $argv)) {
+	die('Please specify config file' . PHP_EOL);
+}
+$configfile = $argv[1];
+
+if (!file_exists($configfile)) {
+	die('Config file does not exist' . PHP_EOL);
+}
+
+// Configuration defaults
+$db_host = 'localhost';
+$db_port = 3306;
+$db_name = '';
+$db_username = '';
+$db_password = '';
+$models_output_dir = __DIR__ . '/Auto';
+$model_to_extend = '\MyApp\ORMBaseClass';
+$controller_model_to_extend = '\Auto\Controller';
+$use_namespaces = false;
+$default_namespace = 'MyApp';
+$plural_tables = [];
+
+// Override from local config file
+include($configfile);
+
+\Granada\Autobuild::configure('mysql:host=' . $db_host . ';port=' . $db_port . ';dbname=' . $db_name);
+\Granada\Autobuild::configure('username', $db_username);
+\Granada\Autobuild::configure('password', $db_password);
+
+$tables = \Granada\Autobuild::getTables($plural_tables);
+\Granada\Autobuild::setPluralTables($plural_tables);
+\Granada\Autobuild::setDefaultNamespace($default_namespace);
+\Granada\Autobuild::setUseNamespaces($use_namespaces);
+
+$permissions = array();
+
+foreach ($tables as $table) {
+	$namespace = \Granada\Autobuild::getNamespace($table);
+	$modelname = \Granada\Autobuild::getModelName($table);
+	$humanName = \Granada\Autobuild::getHumanName($table);
+
+	$tabledata = \Granada\Autobuild::getStructure($table, $namespace, $modelname, $humanName);
+	$tabledata['controllerToExtend'] = $controller_model_to_extend;
+	$tabledata['modelToExtend'] = $model_to_extend;
+
+	\Granada\Autobuild::createModels($tabledata, $models_output_dir);
+	exit;
+}

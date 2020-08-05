@@ -2,9 +2,16 @@
     "name": "granadaorm/granada",
     "type": "library",
     "description": "Active Record / ORM with eager loading, lazy loading and more",
-    "keywords": ["active record", "orm","eager-loading", "paris", "idiorm", "database"],
+    "keywords": [
+        "active record",
+        "orm",
+        "eager-loading",
+        "paris",
+        "idiorm",
+        "database"
+    ],
     "homepage": "https://github.com/GranadaORM/Granada",
-     "support": {
+    "support": {
         "issues": "https://github.com/GranadaORM/Granada/issues",
         "source": "https://github.com/GranadaORM/Granada"
     },
@@ -29,14 +36,22 @@
     "scripts": {
         "test": "phpunit"
     },
+    "bin": [
+        "bin/db2model"
+    ],
     "replace": {
         "surt/granada": "*"
     },
     "require": {
-        "php": ">=5.6.0"
+        "php": ">=5.6.0",
+        "cakephp/chronos": "^2.0",
+        "doctrine/inflector": "^2.0",
+        "twig/twig": "^3.0"
     },
     "autoload": {
-        "psr-0": {"Granada": "src/"}
+        "psr-0": {
+            "Granada": "src/"
+        }
     },
     "require-dev": {
         "phpunit/phpunit": "^5.6|^7.3"
