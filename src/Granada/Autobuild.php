@@ -661,6 +661,7 @@ class Autobuild extends ORM {
 		$controllerfile = $controllerpath . '/' . $tabledata['modelname'] . 'Controller.php';
 		$modelfile = $modelpath . '/' . $tabledata['modelname'] . '.php';
 		$basefile = $modelpath . '/_base/Base' . $tabledata['modelname'] . '.php';
+		$queryfile = $modelpath . '/_base/Query' . $tabledata['modelname'] . '.php';
 
 		$basepath = dirname($basefile);
 		if (!file_exists($basepath)) {
@@ -672,6 +673,7 @@ class Autobuild extends ORM {
 		$twig->addFilter(new \Twig\TwigFilter('lcfirst', 'lcfirst'));
 
 		file_put_contents($basefile, $twig->render('baseModelTemplate.twig', $tabledata));
+		file_put_contents($queryfile, $twig->render('queryModelTemplate.twig', $tabledata));
 
 		if (!file_exists($modelfile)) {
 			file_put_contents($modelfile, $twig->render('modelTemplate.twig', $tabledata));
