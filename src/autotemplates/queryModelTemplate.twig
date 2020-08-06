@@ -21,6 +21,7 @@ namespace {{ namespace }};
  * @method string min(string $column) Will return the min value of the chosen column.
  * @method string avg(string $column) Will return the average value of the chosen column.
  * @method string sum(string $column) Will return the sum of the values of the chosen column.
+ * @method boolean delete_many() Delete all matching records
  * @method \{{namespace}}\Query{{modelname}} raw_query(string $query, array $parameters) Perform a raw query. The query can contain placeholders in either named or question mark style. If placeholders are used, the parameters should be an array of values which will be bound to the placeholders in the query. If this method is called, all other query building methods will be ignored.
  * @method \{{namespace}}\Query{{modelname}} table_alias(string $alias) Add an alias for the main table to be used in SELECT queries
  * @method \{{namespace}}\Query{{modelname}} select(string $column, string $alias) Add a column to the list of columns returned by the SELECT query. This defaults to '*'. The second optional argument is the alias to return the column as.

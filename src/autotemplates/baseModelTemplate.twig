@@ -22,19 +22,6 @@ namespace {{ namespace }};
 {% if (field.type == 'dob') or (field.type == 'date') or (field.type == 'datetime') or (field.type == 'time') %}
  * @property \Cake\Chronos\Chronos ${{field.name}}_chronos
 {% endif %}
-{% if (field.type == 'dob') or (field.type == 'date') or (field.type == 'datetime') %}
- * @property integer ${{field.name}}_day
- * @property integer ${{field.name}}_month
- * @property integer ${{field.name}}_year
- * @property string ${{field.name}}_yearmonth
- * @property string ${{field.name}}_finmonth
- * @property integer ${{field.name}}_finyear
- * @property integer ${{field.name}}_iso
-{% endif %}
-{% if (field.type == 'datetime') or (field.type == 'time') %}
- * @property integer ${{field.name}}_hour
- * @property integer ${{field.name}}_minute
-{% endif %}
 {% endfor %}
  *
 {% for field in belongsTo %}
@@ -44,7 +31,6 @@ namespace {{ namespace }};
  * @property \{{field.namespace}}\{{field.modelname}}[] ${{field.arvarname}}
 {% endfor %}
  *
- * @method boolean delete_many() Delete all matching records
  * @method \{{namespace}}\{{modelname}} force_all_dirty() Force the ORM to flag all the fields in the $data array as "dirty" and therefore update them when save() is called.
  * @method \{{namespace}}\{{modelname}} save(boolean $ignore = false) Save and reload the model, optionally ignoring existing id (Use INSERT ON DUPLICATE KEY UPDATE query).
  */
