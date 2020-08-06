@@ -324,6 +324,10 @@ class Wrapper extends ORM {
                 $varname = substr($method, 6, -9);
                 return $this->where_not_like($varname, $parameters);
             }
+            if ($end9 == '_not_null') {
+                $varname = substr($method, 6, -9);
+                return $this->where_not_null($varname);
+            }
             $end7 = substr($method, -7);
             if ($end7 == '_not_in') {
                 $varname = substr($method, 6, -7);
@@ -333,6 +337,10 @@ class Wrapper extends ORM {
             if ($end5 == '_like') {
                 $varname = substr($method, 6, -5);
                 return $this->where_like($varname, $parameters);
+            }
+            if ($end5 == '_null') {
+                $varname = substr($method, 6, -5);
+                return $this->where_null($varname);
             }
             $end4 = substr($method, -4);
             if ($end4 == '_gte') {
