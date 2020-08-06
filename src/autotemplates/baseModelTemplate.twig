@@ -23,7 +23,6 @@ namespace {{ namespace }};
  * @property \Cake\Chronos\Chronos ${{field.name}}_chronos
 {% endif %}
 {% endfor %}
- *
 {% for field in belongsTo %}
  * @property \{{field.namespace}}\{{field.modelname}} ${{field.arvarname}}
 {% endfor %}
