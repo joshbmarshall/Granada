@@ -324,12 +324,12 @@ class Wrapper extends ORM {
             $end10 = substr($method, -10);
             if ($end10 == '_not_equal') {
                 $varname = substr($method, 6, -10);
-                return $this->where_not_equal($varname, $this->adjustTimezoneForWhere($varname, $parameters));
+                return $this->where_not_equal($varname, $this->adjustTimezoneForWhere($varname, $parameters[0]));
             }
             $end9 = substr($method, -9);
             if ($end9 == '_not_like') {
                 $varname = substr($method, 6, -9);
-                return $this->where_not_like($varname, $this->adjustTimezoneForWhere($varname, $parameters));
+                return $this->where_not_like($varname, $this->adjustTimezoneForWhere($varname, $parameters[0]));
             }
             if ($end9 == '_not_null') {
                 $varname = substr($method, 6, -9);
@@ -338,12 +338,12 @@ class Wrapper extends ORM {
             $end7 = substr($method, -7);
             if ($end7 == '_not_in') {
                 $varname = substr($method, 6, -7);
-                return $this->where_not_in($varname, $this->adjustTimezoneForWhere($varname, $parameters));
+                return $this->where_not_in($varname, $this->adjustTimezoneForWhere($varname, $parameters[0]));
             }
             $end5 = substr($method, -5);
             if ($end5 == '_like') {
                 $varname = substr($method, 6, -5);
-                return $this->where_like($varname, $this->adjustTimezoneForWhere($varname, $parameters));
+                return $this->where_like($varname, $this->adjustTimezoneForWhere($varname, $parameters[0]));
             }
             if ($end5 == '_null') {
                 $varname = substr($method, 6, -5);
@@ -352,27 +352,27 @@ class Wrapper extends ORM {
             $end4 = substr($method, -4);
             if ($end4 == '_gte') {
                 $varname = substr($method, 6, -4);
-                return $this->where_gte($varname, $this->adjustTimezoneForWhere($varname, $parameters));
+                return $this->where_gte($varname, $this->adjustTimezoneForWhere($varname, $parameters[0]));
             }
             if ($end4 == '_lte') {
                 $varname = substr($method, 6, -4);
-                return $this->where_lte($varname, $this->adjustTimezoneForWhere($varname, $parameters));
+                return $this->where_lte($varname, $this->adjustTimezoneForWhere($varname, $parameters[0]));
             }
             $end3 = substr($method, -3);
             if ($end3 == '_gt') {
                 $varname = substr($method, 6, -3);
-                return $this->where_gt($varname, $this->adjustTimezoneForWhere($varname, $parameters));
+                return $this->where_gt($varname, $this->adjustTimezoneForWhere($varname, $parameters[0]));
             }
             if ($end3 == '_lt') {
                 $varname = substr($method, 6, -3);
-                return $this->where_lt($varname, $this->adjustTimezoneForWhere($varname, $parameters));
+                return $this->where_lt($varname, $this->adjustTimezoneForWhere($varname, $parameters[0]));
             }
             if ($end3 == '_in') {
                 $varname = substr($method, 6, -3);
-                return $this->where_in($varname, $this->adjustTimezoneForWhere($varname, $parameters));
+                return $this->where_in($varname, $this->adjustTimezoneForWhere($varname, $parameters[0]));
             }
             $varname = substr($method, 6);
-            return $this->where_equal($varname, $this->adjustTimezoneForWhere($varname, $parameters));
+            return $this->where_equal($varname, $this->adjustTimezoneForWhere($varname, $parameters[0]));
         } else if ($method == 'order_by_rand') {
             return $this->order_by_expr('RAND()');
         } else if ($method == 'order_by_list') {

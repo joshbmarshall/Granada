@@ -267,32 +267,32 @@ abstract class Base{{modelname}} extends {{ modelToExtend }} {
 	 *
 	 * @return array list of fields
 	 */
-	public static function datefields() {
+	public function datefields() {
 		return array(
 {% for field in structure %}
 {% if field.type == 'date' %}
-			'{{tablename}}.{{field.name}}' => array(
+			'{{field.name}}' => array(
 				'type' => 'date',
 				'format' => 'Y-m-d',
 				'timezone_mode' => '{{field.timezone_mode}}',
 				'timezone_comparison_mode' => '{{field.timezone_comparison_mode}}',
 			),
 {% elseif field.type == 'dob' %}
-			'{{tablename}}.{{field.name}}' => array(
+			'{{field.name}}' => array(
 				'type' => 'date',
 				'format' => 'Y-m-d',
 				'timezone_mode' => '{{field.timezone_mode}}',
 				'timezone_comparison_mode' => '{{field.timezone_comparison_mode}}',
 			),
 {% elseif field.type == 'datetime' %}
-			'{{tablename}}.{{field.name}}' => array(
+			'{{field.name}}' => array(
 				'type' => 'datetime',
 				'format' => 'Y-m-d H:i:s',
 				'timezone_mode' => '{{field.timezone_mode}}',
 				'timezone_comparison_mode' => '{{field.timezone_comparison_mode}}',
 			),
 {% elseif field.type == 'time' %}
-			'{{tablename}}.{{field.name}}' => array(
+			'{{field.name}}' => array(
 				'type' => 'time',
 				'format' => 'H:i:s',
 				'timezone_mode' => '{{field.timezone_mode}}',
