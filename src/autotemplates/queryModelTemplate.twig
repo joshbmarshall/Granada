@@ -14,12 +14,6 @@ namespace {{ namespace }};
  * @method \{{namespace}}\{{modelname}} find_pairs_representation(integer $limit) List of items in an array using the representation string
  * @method \{{namespace}}\{{modelname}} find_one(integer $id) Find one matching record. If $id is set, get the pk record
  * @method \{{namespace}}\{{modelname}}[] find_many() Find all matching records
- * @method integer count(string $column) Get the count of the column
- * @method string max(string $column) Will return the max value of the chosen column.
- * @method string min(string $column) Will return the min value of the chosen column.
- * @method string avg(string $column) Will return the average value of the chosen column.
- * @method string sum(string $column) Will return the sum of the values of the chosen column.
- * @method boolean delete_many() Delete all matching records
  * @method \{{namespace}}\Query{{modelname}} raw_query(string $query, array $parameters) Perform a raw query. The query can contain placeholders in either named or question mark style. If placeholders are used, the parameters should be an array of values which will be bound to the placeholders in the query. If this method is called, all other query building methods will be ignored.
  * @method \{{namespace}}\Query{{modelname}} table_alias(string $alias) Add an alias for the main table to be used in SELECT queries
  * @method \{{namespace}}\Query{{modelname}} select(string $column, string $alias) Add a column to the list of columns returned by the SELECT query. This defaults to '*'. The second optional argument is the alias to return the column as.
@@ -95,8 +89,7 @@ namespace {{ namespace }};
 {% endif %}
  * @method \{{namespace}}\Query{{modelname}} where_raw(string $clause, array $parameters = NULL) Add a raw WHERE clause to the query. The clause should contain question mark placeholders, which will be bound to the parameters supplied in the second argument.
  * @method \{{namespace}}\Query{{modelname}} with(string $name) Eager-load data from another table
- * @method \{{namespace}}\Query{{modelname}} defaultFilter() Add a query to get default filter. Use as $items = {{modelname}}::defaultFilter()->find_many();
- * @method array find_pairs(string|null $key, string|null $value) Gets data in array form, as pairs of data for each row in the results. The key and value are the database column to use as the array keys and values
+ * @method \{{namespace}}\Query{{modelname}} defaultFilter() Add a query to get default filter. Use as $items = {{modelname}}::model()->defaultFilter()->find_many();
 {% for field in structure %}
  * @method \{{namespace}}\Query{{modelname}} order_by_{{field.name}}_asc() Add an ORDER BY column ASC clause for {{field.name}}
  * @method \{{namespace}}\Query{{modelname}} order_by_{{field.name}}_desc() Add an ORDER BY column DESC clause for {{field.name}}

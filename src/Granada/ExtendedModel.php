@@ -4,6 +4,15 @@ namespace Granada;
 
 /**
  * This model should be used to extend the auto-generated models
+ *
+ * @method array find_pairs(string|null $key, string|null $value) Gets data in array form, as pairs of data for each row in the results. The key and value are the database column to use as the array keys and values
+ * @method integer count(string $column) Get the count of the column
+ * @method string max(string $column) Will return the max value of the chosen column.
+ * @method string min(string $column) Will return the min value of the chosen column.
+ * @method string avg(string $column) Will return the average value of the chosen column.
+ * @method string sum(string $column) Will return the sum of the values of the chosen column.
+ * @method boolean delete_many() Delete all matching records
+ *
  */
 class ExtendedModel extends Model {
 
@@ -176,5 +185,25 @@ class ExtendedModel extends Model {
         }
         natcasesort($list);
         return $list;
+    }
+
+    /**
+     * Add query filter for every query for this model
+     *
+     * @var \Granada\Orm\Wrapper $query
+     * @return \Granada\Orm\Wrapper
+     */
+    public static function filter_defaultFilter($query) {
+        $class = get_called_class();
+        if ($class::hasAttribute('is_deleted')) {
+            $query = $query->where_is_deleted(0);
+        }
+        if ($class::hasAttribute('enabled')) {
+            $query = $query->where_enabled(1);
+        }
+        if ($class::hasAttribute('stealth')) {
+            $query = $query->where_stealth(0);
+        }
+        return $query;
     }
 }
