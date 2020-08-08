@@ -16,6 +16,18 @@ namespace Granada;
  */
 class ExtendedModel extends Model {
 
+    public function beforeSave() {
+    }
+
+    public function beforeSaveNew() {
+    }
+
+    public function afterSave() {
+    }
+
+    public function afterSaveNew() {
+    }
+
     public function __get($property) {
         // Auto-get Chronos variable type
         if (substr($property, -8) == '_chronos') {
