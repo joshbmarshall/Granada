@@ -30,7 +30,6 @@ namespace {{ namespace }};
  * @property \{{field.namespace}}\{{field.modelname}}[] ${{field.arvarname}}
 {% endfor %}
  *
- * @method \{{namespace}}\{{modelname}} force_all_dirty() Force the ORM to flag all the fields in the $data array as "dirty" and therefore update them when save() is called.
  * @method \{{namespace}}\{{modelname}} save(boolean $ignore = false) Save and reload the model, optionally ignoring existing id (Use INSERT ON DUPLICATE KEY UPDATE query).
  */
 abstract class Base{{modelname}} extends {{ modelToExtend }} {
@@ -163,6 +162,13 @@ abstract class Base{{modelname}} extends {{ modelToExtend }} {
 	public function representation() {
 		return $this->{{representation}};
 	}
+
+    /**
+     * The columns used as part of the representation method
+     */
+    public static function representationColumns() {
+            return array('{{representation}}');
+    }
 
 	/**
 	 * Any fields listed in this array will not affect the updated_at and created_at timestamp fields on save

@@ -155,4 +155,26 @@ class ExtendedModel extends Model {
 
         return $value;
     }
+
+    public static function filter_find_pairs_representation($query, $limit = 1000) {
+        $modelname = get_called_class();
+
+        $query->select('id');
+        foreach ($modelname::representationColumns() as $columnName) {
+            $query->select($columnName);
+        }
+        $query->order_by_expr($modelname::defaultOrder());
+        if ($limit) {
+            $query->limit($limit);
+        }
+
+        $items = $query->find_many();
+
+        $list = array();
+        foreach ($items as $item) {
+            $list[$item->id] = $item->representation();
+        }
+        natcasesort($list);
+        return $list;
+    }
 }
