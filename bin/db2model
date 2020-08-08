@@ -74,5 +74,4 @@ foreach ($tables as $table) {
 	$tabledata['modelToExtend'] = $model_to_extend;
 
 	\Granada\Autobuild::createModels($tabledata, $models_output_dir);
-	exit;
 }
