@@ -190,35 +190,35 @@ class EagerTest extends PHPUnit_Framework_TestCase {
         $expectedParts = array();
         $expectedParts[] =  array('id' => '1', 'name' => 'Part1',
                                 'cars' => array(
-                                    array('id' => '1', 'name' => 'Car1', 'manufactor_id' => '1', 'owner_id' => '1', 'is_deleted' => '0', 'enabled' => '1'),
-                                    array('id' => '2', 'name' => 'Car2', 'manufactor_id' => '1', 'owner_id' => '2', 'is_deleted' => '0', 'enabled' => '1'),
-                                    array('id' => '3', 'name' => 'Car3', 'manufactor_id' => '2', 'owner_id' => '3', 'is_deleted' => '0', 'enabled' => '1'),
-                                    array('id' => '4', 'name' => 'Car4', 'manufactor_id' => '2', 'owner_id' => '4', 'is_deleted' => '0', 'enabled' => '1'),
-                                    array('id' => '1', 'name' => 'Car1', 'manufactor_id' => '1', 'owner_id' => '1', 'is_deleted' => '0', 'enabled' => '1'),
+                                    array('id' => '1', 'name' => 'Car1', 'manufactor_id' => '1', 'owner_id' => '1', 'is_deleted' => '0', 'enabled' => '1', 'stealth' => '0', 'created_at' => null, 'updated_at' => null),
+                                    array('id' => '2', 'name' => 'Car2', 'manufactor_id' => '1', 'owner_id' => '2', 'is_deleted' => '0', 'enabled' => '1', 'stealth' => '0', 'created_at' => null, 'updated_at' => null),
+                                    array('id' => '3', 'name' => 'Car3', 'manufactor_id' => '2', 'owner_id' => '3', 'is_deleted' => '0', 'enabled' => '1', 'stealth' => '1', 'created_at' => null, 'updated_at' => null),
+                                    array('id' => '4', 'name' => 'Car4', 'manufactor_id' => '2', 'owner_id' => '4', 'is_deleted' => '0', 'enabled' => '1', 'stealth' => '0', 'created_at' => null, 'updated_at' => null),
+                                    array('id' => '1', 'name' => 'Car1', 'manufactor_id' => '1', 'owner_id' => '1', 'is_deleted' => '0', 'enabled' => '1', 'stealth' => '0', 'created_at' => null, 'updated_at' => null),
                                 )
                             );
 
         $expectedParts[] =  array('id' => '2', 'name' => 'Part2',
                                 'cars' => array(
-                                    array('id' => '1', 'name' => 'Car1', 'manufactor_id' => '1', 'owner_id' => '1', 'is_deleted' => '0', 'enabled' => '1'),
+                                    array('id' => '1', 'name' => 'Car1', 'manufactor_id' => '1', 'owner_id' => '1', 'is_deleted' => '0', 'enabled' => '1', 'stealth' => '0', 'created_at' => null, 'updated_at' => null),
                                 )
                             );
 
         $expectedParts[] =  array('id' => '3', 'name' => 'Part3',
                                 'cars' => array(
-                                    array('id' => '2', 'name' => 'Car2', 'manufactor_id' => '1', 'owner_id' => '2', 'is_deleted' => '0', 'enabled' => '1'),
+                                    array('id' => '2', 'name' => 'Car2', 'manufactor_id' => '1', 'owner_id' => '2', 'is_deleted' => '0', 'enabled' => '1', 'stealth' => '0', 'created_at' => null, 'updated_at' => null),
                                 )
                             );
 
         $expectedParts[] =  array('id' =>  '4', 'name' => 'Part4',
                                 'cars' => array(
-                                    array('id' => '3', 'name' => 'Car3', 'manufactor_id' => '2', 'owner_id' => '3', 'is_deleted' => '0', 'enabled' => '1'),
+                                    array('id' => '3', 'name' => 'Car3', 'manufactor_id' => '2', 'owner_id' => '3', 'is_deleted' => '0', 'enabled' => '1', 'stealth' => '1', 'created_at' => null, 'updated_at' => null),
                                 )
                             );
 
         $expectedParts[] =  array('id' => '5', 'name' => 'Part5',
                                 'cars' => array(
-                                    array('id' => '4', 'name' => 'Car4', 'manufactor_id' => '2', 'owner_id' => '4', 'is_deleted' => '0', 'enabled' => '1'),
+                                    array('id' => '4', 'name' => 'Car4', 'manufactor_id' => '2', 'owner_id' => '4', 'is_deleted' => '0', 'enabled' => '1', 'stealth' => '0', 'created_at' => null, 'updated_at' => null),
                                 )
                             );
 

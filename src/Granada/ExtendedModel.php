@@ -28,6 +28,12 @@ class ExtendedModel extends Model {
     public function afterSaveNew() {
     }
 
+    public function beforeDelete() {
+    }
+
+    public function afterDelete() {
+    }
+
     public function __get($property) {
         // Auto-get Chronos variable type
         if (substr($property, -8) == '_chronos') {
@@ -80,7 +86,19 @@ class ExtendedModel extends Model {
                 return $date->toTimeString();
             }
         }
-        return parent::__get($property);
+        $value = parent::__get($property);
+        if (is_null($value)) {
+            return null;
+        }
+        // Clean data to correct types for json output etc
+        switch ($this->fieldType($property)) {
+            case 'boolean':
+                return $value ? true : false;
+            case 'integer':
+                return intval($value);
+            default:
+                return $value;
+        }
     }
 
     public function __set($property, $value) {
@@ -217,5 +235,10 @@ class ExtendedModel extends Model {
             $query = $query->where_stealth(0);
         }
         return $query;
+    }
+
+    public function save($ignore = false) {
+        parent::save($ignore);
+        return $this;
     }
 }

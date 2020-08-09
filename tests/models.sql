@@ -19,7 +19,10 @@ CREATE TABLE car (
     manufactor_id INTEGER,
     owner_id INTEGER,
     enabled INTEGER,
+    stealth INTEGER,
     is_deleted INTEGER,
+    created_at DATETIME,
+    updated_at DATETIME,
     FOREIGN KEY (manufactor_id) REFERENCES manufactor (id),
     FOREIGN KEY (owner_id) REFERENCES owner (id)
 );
@@ -47,12 +50,12 @@ INSERT INTO part(id,name) VALUES (3, 'Part3');
 INSERT INTO part(id,name) VALUES (4, 'Part4');
 INSERT INTO part(id,name) VALUES (5, 'Part5');
 
-INSERT INTO car(id,name,manufactor_id, owner_id, enabled, is_deleted) VALUES (1, 'Car1',1,1,1,0);
-INSERT INTO car(id,name,manufactor_id, owner_id, enabled, is_deleted) VALUES (2, 'Car2',1,2,1,0);
-INSERT INTO car(id,name,manufactor_id, owner_id, enabled, is_deleted) VALUES (3, 'Car3',2,3,1,0);
-INSERT INTO car(id,name,manufactor_id, owner_id, enabled, is_deleted) VALUES (4, 'Car4',2,4,1,0);
-INSERT INTO car(id,name,manufactor_id, owner_id, enabled, is_deleted) VALUES (5, 'Car5',2,4,1,1);
-INSERT INTO car(id,name,manufactor_id, owner_id, enabled, is_deleted) VALUES (6, 'Car6',2,4,0,0);
+INSERT INTO car(id,name,manufactor_id, owner_id, enabled, stealth, is_deleted) VALUES (1, 'Car1',1,1,1,0,0);
+INSERT INTO car(id,name,manufactor_id, owner_id, enabled, stealth, is_deleted) VALUES (2, 'Car2',1,2,1,0,0);
+INSERT INTO car(id,name,manufactor_id, owner_id, enabled, stealth, is_deleted) VALUES (3, 'Car3',2,3,1,1,0);
+INSERT INTO car(id,name,manufactor_id, owner_id, enabled, stealth, is_deleted) VALUES (4, 'Car4',2,4,1,0,0);
+INSERT INTO car(id,name,manufactor_id, owner_id, enabled, stealth, is_deleted) VALUES (5, 'Car5',2,4,1,0,1);
+INSERT INTO car(id,name,manufactor_id, owner_id, enabled, stealth, is_deleted) VALUES (6, 'Car6',2,4,0,0,0);
 
 INSERT INTO car_part(id,car_id,part_id) VALUES (1,1,1);
 INSERT INTO car_part(id,car_id,part_id) VALUES (2,2,1);

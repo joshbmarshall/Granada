@@ -683,4 +683,27 @@ class Autobuild extends ORM {
 			file_put_contents($controllerfile, $twig->render('controllerTemplate.twig', $tabledata));
 		}
 	}
+
+	/**
+	 * Entrypoint
+	 */
+	public static function doBuild($models_output_dir, $model_to_extend, $controller_model_to_extend, $use_namespaces, $default_namespace, $plural_tables) {
+
+		$tables = \Granada\Autobuild::getTables($plural_tables);
+		\Granada\Autobuild::setPluralTables($plural_tables);
+		\Granada\Autobuild::setDefaultNamespace($default_namespace);
+		\Granada\Autobuild::setUseNamespaces($use_namespaces);
+
+		foreach ($tables as $table) {
+			$namespace = \Granada\Autobuild::getNamespace($table);
+			$modelname = \Granada\Autobuild::getModelName($table);
+			$humanName = \Granada\Autobuild::getHumanName($table);
+
+			$tabledata = \Granada\Autobuild::getStructure($table, $namespace, $modelname, $humanName);
+			$tabledata['controllerToExtend'] = $controller_model_to_extend;
+			$tabledata['modelToExtend'] = $model_to_extend;
+
+			\Granada\Autobuild::createModels($tabledata, $models_output_dir);
+		}
+	}
 }

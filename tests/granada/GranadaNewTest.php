@@ -564,6 +564,9 @@ class GranadaNewTest extends PHPUnit_Framework_TestCase {
             'owner_id' => '1',
             'is_deleted' => '0',
             'enabled' => '1',
+            'stealth' => '0',
+            'created_at' => null,
+            'updated_at' => null,
         );
         $this->assertEquals($expected, $car->clean_values());
         $car->save();
