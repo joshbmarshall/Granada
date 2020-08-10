@@ -247,7 +247,14 @@ class ExtendedModel extends Model {
     public function save($ignore = false) {
         $isnew = $this->is_new();
 
+        $doTimestamps = $this->hasAttribute('updated_at');
+        if ($doTimestamps) {
+            $this->updated_at = \Cake\Chronos\Chronos::now();
+        }
         if ($isnew) {
+            if ($doTimestamps) {
+                $this->created_at = \Cake\Chronos\Chronos::now();
+            }
             $this->beforeSaveNew();
         }
         $this->beforeSave();

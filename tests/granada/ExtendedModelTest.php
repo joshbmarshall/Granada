@@ -9,6 +9,7 @@ use Granada\Orm;
 class ExtendedModelTest extends PHPUnit_Framework_TestCase {
 
     public function setUp() {
+        \Cake\Chronos\Chronos::setTestNow(\Cake\Chronos\Chronos::parse('2020-08-10 22:33:52', 'UTC'));
 
         spl_autoload_register(function ($classname) {
             $nsmodel = explode('\\', $classname);
@@ -471,13 +472,14 @@ class ExtendedModelTest extends PHPUnit_Framework_TestCase {
         ));
         $count = \MyAppTest\Car::model()->count();
         $expectedSql   = array();
-        $expectedSql[] = "INSERT INTO `car` (`id`, `name`, `manufactor_id`, `owner_id`, `is_deleted`) VALUES ('20', 'Car20', '1', '1', '0')";
+        $expectedSql[] = "INSERT INTO `car` (`id`, `name`, `manufactor_id`, `owner_id`, `is_deleted`, `updated_at`, `created_at`) VALUES ('20', 'Car20', '1', '1', '0', '2020-08-10 22:33:52', '2020-08-10 22:33:52')";
+        $expectedSql[] = "SELECT * FROM `car` WHERE `car`.`is_deleted` = '0' AND `id` = '20' LIMIT 1";
         $expectedSql[] = "SELECT COUNT(*) AS `count` FROM `car` WHERE `car`.`is_deleted` = '0' LIMIT 1";
 
         $fullQueryLog = ORM::get_query_log();
 
         // Return last two queries
-        $actualSql = array_slice($fullQueryLog, count($fullQueryLog) - 2);
+        $actualSql = array_slice($fullQueryLog, count($fullQueryLog) - 3);
 
         $this->assertSame($expectedSql, $actualSql);
         $this->assertSame(6, $count, 'Car must be Inserted');
@@ -495,13 +497,14 @@ class ExtendedModelTest extends PHPUnit_Framework_TestCase {
         ));
         $count = \MyAppTest\Car::model()->count();
         $expectedSql   = array();
-        $expectedSql[] = "INSERT INTO `car` (`id`, `name`, `manufactor_id`, `owner_id`, `is_deleted`) VALUES ('20', 'Car20', '1', '1', '1')";
+        $expectedSql[] = "INSERT INTO `car` (`id`, `name`, `manufactor_id`, `owner_id`, `is_deleted`, `updated_at`, `created_at`) VALUES ('20', 'Car20', '1', '1', '1', '2020-08-10 22:33:52', '2020-08-10 22:33:52')";
+        $expectedSql[] = "SELECT * FROM `car` WHERE `car`.`is_deleted` = '0' AND `id` = '20' LIMIT 1";
         $expectedSql[] = "SELECT COUNT(*) AS `count` FROM `car` WHERE `car`.`is_deleted` = '0' LIMIT 1";
 
         $fullQueryLog = ORM::get_query_log();
 
         // Return last two queries
-        $actualSql = array_slice($fullQueryLog, count($fullQueryLog) - 2);
+        $actualSql = array_slice($fullQueryLog, count($fullQueryLog) - 3);
 
         $this->assertSame($expectedSql, $actualSql);
         $this->assertSame(5, $count);
@@ -568,7 +571,8 @@ class ExtendedModelTest extends PHPUnit_Framework_TestCase {
         $this->assertSame($expected, $car->clean_values());
         $car->save();
         // Changes after save
-        $expected['manufactor_id'] = 2;
+        $expected['manufactor_id'] = '2';
+        $expected['updated_at'] = '2020-08-10 22:33:52';
         $this->assertSame($expected, $car->clean_values());
     }
 
@@ -596,7 +600,71 @@ class ExtendedModelTest extends PHPUnit_Framework_TestCase {
         ), $cars);
     }
 
-    public function testTimezone() {
+    public function testCreatedAt() {
+        $car = \MyAppTest\Car::create(array(
+            'name' => 'Test',
+        ))->save();
+
+        $expectedSql   = array();
+        // Stores datetime in UTC timezone
+        $expectedSql[] = "INSERT INTO `car` (`name`, `updated_at`, `created_at`) VALUES ('Test', '2020-08-10 22:33:52', '2020-08-10 22:33:52')";
+        $expectedSql[] = "SELECT * FROM `car` WHERE `car`.`is_deleted` = '0' AND `id` = '7' LIMIT 1";
+
+        $fullQueryLog = ORM::get_query_log();
+
+        // Return last two queries
+        $actualSql = array_slice($fullQueryLog, count($fullQueryLog) - 2);
+
+        $this->assertSame($expectedSql, $actualSql);
+
+        // Time in Chicago
+        $this->assertSame('2020-08-10 17:33:52', $car->created_at);
+        $this->assertSame('2020-08-10 17:33:52', $car->created_at_chronos->toDateTimeString());
+        $this->assertSame('America/Chicago', $car->created_at_chronos->timezoneName);
+    }
+
+    public function testUpdatedAt() {
+        $car = \MyAppTest\Car::create(array(
+            'name' => 'Test',
+        ))->save();
+
+        // Change time
+        \Cake\Chronos\Chronos::setTestNow(\Cake\Chronos\Chronos::parse('2020-08-11 10:08:22', 'UTC'));
+        $car->name = 'Test2';
+        $car->save();
+
+        $expectedSql   = array();
+        // Stores datetime in UTC timezone
+        $expectedSql[] = "UPDATE `car` SET `name` = 'Test2', `updated_at` = '2020-08-11 10:08:22' WHERE `id` = '7'";
+        $expectedSql[] = "SELECT * FROM `car` WHERE `car`.`is_deleted` = '0' AND `id` = '7' LIMIT 1";
+
+        $fullQueryLog = ORM::get_query_log();
+
+        // Return last two queries
+        $actualSql = array_slice($fullQueryLog, count($fullQueryLog) - 2);
+
+        $this->assertSame($expectedSql, $actualSql);
+
+        // Time in Chicago
+        $this->assertSame('2020-08-11 05:08:22', $car->updated_at);
+        $this->assertSame('2020-08-11 05:08:22', $car->updated_at_chronos->toDateTimeString());
+        $this->assertSame('America/Chicago', $car->updated_at_chronos->timezoneName);
+    }
+
+    public function testTimezoneInWhere() {
+        $cars = \MyAppTest\Car::model()->where_created_at_gt(\Cake\Chronos\Chronos::now()->addHour())
+            ->find_many();
+
+        $expectedSql = "SELECT * FROM `car` WHERE `car`.`is_deleted` = '0' AND `created_at` > '2020-08-10 23:33:52'";
+        $this->assertSame($expectedSql, Orm::get_last_query());
+    }
+
+    public function testTimezoneInWhereChangeTimezone() {
+        $cars = \MyAppTest\Car::model()->where_created_at_gt(\Cake\Chronos\Chronos::parse('2020-08-10 11:28:23', 'America/Chicago')->addHour())
+            ->find_many();
+
+        $expectedSql = "SELECT * FROM `car` WHERE `car`.`is_deleted` = '0' AND `created_at` > '2020-08-10 17:28:23'";
+        $this->assertSame($expectedSql, Orm::get_last_query());
     }
 
     public function testBeforeSave() {
@@ -652,5 +720,4 @@ class ExtendedModelTest extends PHPUnit_Framework_TestCase {
         $part->reload();
         $this->assertSame('After Delete', $part->name);
     }
-
 }
