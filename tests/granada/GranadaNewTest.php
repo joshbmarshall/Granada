@@ -21,7 +21,7 @@ class GranadaNewTest extends PHPUnit_Framework_TestCase {
         ORM::set_db(new PDO('sqlite::memory:'));
 
         // Create schemas and populate with data
-        ORM::get_db()->exec(file_get_contents(__DIR__ . DIRECTORY_SEPARATOR . '..'.DIRECTORY_SEPARATOR.'models.sql'));
+        ORM::get_db()->exec(file_get_contents(__DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'models.sql'));
 
         // Enable logging
         ORM::configure('logging', true);
@@ -32,14 +32,14 @@ class GranadaNewTest extends PHPUnit_Framework_TestCase {
         ORM::set_db(null);
     }
 
-    public function testGetter(){
+    public function testGetter() {
         $car = Model::factory('Car')->find_one(1);
         $expected = 'Car1';
         $this->assertEquals($expected, $car->get('name'), 'Get method test');
         $this->assertEquals($expected, $car->name, '__get magic method test');
 
-    	$car = Model::factory('Car')->find_one(1);
-    	$expected = null;
+        $car = Model::factory('Car')->find_one(1);
+        $expected = null;
         $this->assertEquals($expected, $car->nonExistentProperty, 'NULL returned if no property found');
 
         $car = Model::factory('Car')->find_one(1);
@@ -52,16 +52,16 @@ class GranadaNewTest extends PHPUnit_Framework_TestCase {
         $this->assertEquals($expected, $car->someProperty, 'Missing property fallback test');
     }
 
-    public function testSetterForProperty(){
-    	$car = Model::factory('Car')->find_one(1);
-    	$car->name = 'Car1';
-    	$car->save();
-    	$expected = 'test';
+    public function testSetterForProperty() {
+        $car = Model::factory('Car')->find_one(1);
+        $car->name = 'Car1';
+        $car->save();
+        $expected = 'test';
         $this->assertEquals($expected, $car->name);
     }
 
-    public function testNewItemNoID(){
-    	$car = Model::factory('Car')->create(array(
+    public function testNewItemNoID() {
+        $car = Model::factory('Car')->create(array(
             'name' => 'New Car',
         ));
         $car->save();
@@ -69,44 +69,44 @@ class GranadaNewTest extends PHPUnit_Framework_TestCase {
         $this->assertEquals($expected, $car->id);
     }
 
-    public function testNewItemBlankID(){
-    	$car = Model::factory('Car')->create(array(
+    public function testNewItemBlankID() {
+        $car = Model::factory('Car')->create(array(
             'id' => '',
             'name' => 'New Car',
         ));
         $car->save();
-    	$expected = 9;
+        $expected = 9;
         $this->assertEquals($expected, $car->id);
     }
 
-    public function testSetterForRelationship(){
-    	$car = Model::factory('Car')->with('manufactor')->find_one(1);
-    	$expected = 'Manufactor1';
+    public function testSetterForRelationship() {
+        $car = Model::factory('Car')->with('manufactor')->find_one(1);
+        $expected = 'Manufactor1';
         $this->assertEquals($expected, $car->manufactor->name, 'Relationship loaded');
 
-    	$expected = 'test';
+        $expected = 'test';
         $car->manufactor = 'test';
 
         $this->assertEquals($expected, $car->relationships['manufactor'], 'Relationship overloaded');
     }
 
-    public function testCallStaticForModel(){
-    	$expected  = Model::factory('Car')->with('manufactor')->find_one(1);
-		$car       = Car::with('manufactor')->find_one(1);
+    public function testCallStaticForModel() {
+        $expected  = Model::factory('Car')->with('manufactor')->find_one(1);
+        $car       = Car::with('manufactor')->find_one(1);
         $this->assertEquals($expected, $car, 'Call from static and from factory are the same');
     }
 
-    public function testPluckValid(){
+    public function testPluckValid() {
         $id = Car::where_id_is(1)->pluck('id');
         $this->assertEquals(1, $id, 'PLuck a column');
     }
 
-    public function testPluckInvalid(){
+    public function testPluckInvalid() {
         $id = Car::where_id_is(10)->pluck('id');
         $this->assertNull($id);
     }
 
-    public function testfindPairs(){
+    public function testfindPairs() {
         $pairs = Car::find_pairs('id', 'name');
         $expected = array(
             '1' => 'Car1',
@@ -118,7 +118,7 @@ class GranadaNewTest extends PHPUnit_Framework_TestCase {
         $this->assertEquals($expected, $pairs);
     }
 
-    public function testfindPairsOrdered(){
+    public function testfindPairsOrdered() {
         $pairs = Car::order_by_desc('id')->find_pairs();
         $expected = array(
             '6' => 'Car6',
@@ -130,7 +130,7 @@ class GranadaNewTest extends PHPUnit_Framework_TestCase {
         $this->assertequals($expected, $pairs);
     }
 
-    public function testfindpairsforceselect(){
+    public function testfindpairsforceselect() {
         $pairs = car::select('id')->select('manufactor_id', 'name')->find_pairs();
         $expected = array(
             '1' => '1',
@@ -142,7 +142,7 @@ class GranadaNewTest extends PHPUnit_Framework_TestCase {
         $this->assertequals($expected, $pairs);
     }
 
-    public function testfindPairsWithJoin(){
+    public function testfindPairsWithJoin() {
         $pairs = Car::join('manufactor', 'manufactor.id=car.manufactor_id')
             ->select('car.name', 'car_name')
             ->select('manufactor.name', 'manufactor_name')
@@ -157,7 +157,7 @@ class GranadaNewTest extends PHPUnit_Framework_TestCase {
         $this->assertEquals($expected, $pairs);
     }
 
-    public function testfindPairsWithJoinIDName(){
+    public function testfindPairsWithJoinIDName() {
         $pairs = Car::join('manufactor', 'manufactor.id=car.manufactor_id')
             ->select('car.name', 'id')
             ->select('manufactor.name', 'name')
@@ -172,7 +172,7 @@ class GranadaNewTest extends PHPUnit_Framework_TestCase {
         $this->assertEquals($expected, $pairs);
     }
 
-    public function testfindPairsWithJoinOrdered(){
+    public function testfindPairsWithJoinOrdered() {
         $pairs = Car::join('manufactor', 'manufactor.id=car.manufactor_id')
             ->select('car.name', 'car_name')
             ->select('manufactor.name', 'manufactor_name')
@@ -188,7 +188,7 @@ class GranadaNewTest extends PHPUnit_Framework_TestCase {
         $this->assertEquals($expected, $pairs);
     }
 
-    public function testfindPairsWithJoinExpr(){
+    public function testfindPairsWithJoinExpr() {
         $pairs = Car::join('manufactor', 'manufactor.id=car.manufactor_id')
             ->join('owner', 'owner.id=car.owner_id')
             ->select('car.name', 'car_name')
@@ -204,216 +204,216 @@ class GranadaNewTest extends PHPUnit_Framework_TestCase {
         $this->assertEquals($expected, $pairs);
     }
 
-    public function testNoResultsfindPairs(){
-        $pairs = Car::where('id',10)->find_pairs('id', 'name');
+    public function testNoResultsfindPairs() {
+        $pairs = Car::where('id', 10)->find_pairs('id', 'name');
         $this->assertEquals(array(), $pairs);
     }
 
-    public function testfindManySelect(){
+    public function testfindManySelect() {
         $cars = Car::select('name')->find_many();
-		// Not an empty array
-		$this->assertNotSame(array(), $cars);
+        // Not an empty array
+        $this->assertNotSame(array(), $cars);
         $this->assertEquals(true, $cars->has_results());
 
         $expected = array(
-			'0' => 'Car1',
-			'1' => 'Car2',
-			'2' => 'Car3',
+            '0' => 'Car1',
+            '1' => 'Car2',
+            '2' => 'Car3',
             '3' => 'Car4',
             '4' => 'Car6',
         );
-		foreach ($cars as $id => $car) {
-			$this->assertNull($car->id); // We are only getting the name field
-			$this->assertEquals($expected[$id], $car->name);
-		}
+        foreach ($cars as $id => $car) {
+            $this->assertNull($car->id); // We are only getting the name field
+            $this->assertEquals($expected[$id], $car->name);
+        }
     }
 
-    public function testfindManyFirstAndLast(){
+    public function testfindManyFirstAndLast() {
         $cars = Car::find_many();
 
         $expected = array(
-			'Car1' => array(
-				'first' => true,
-				'last' => false,
-			),
-			'Car2' => array(
-				'first' => false,
-				'last' => false,
-			),
-			'Car3' => array(
-				'first' => false,
-				'last' => false,
-			),
-			'Car4' => array(
-				'first' => false,
-				'last' => false,
-			),
-			'Car6' => array(
-				'first' => false,
-				'last' => true,
-			),
+            'Car1' => array(
+                'first' => true,
+                'last' => false,
+            ),
+            'Car2' => array(
+                'first' => false,
+                'last' => false,
+            ),
+            'Car3' => array(
+                'first' => false,
+                'last' => false,
+            ),
+            'Car4' => array(
+                'first' => false,
+                'last' => false,
+            ),
+            'Car6' => array(
+                'first' => false,
+                'last' => true,
+            ),
         );
-		foreach ($cars as $car) {
-			$this->assertSame($expected[$car->name]['first'], $car->isFirstResult());
-			$this->assertSame($expected[$car->name]['last'], $car->isLastResult());
-		}
+        foreach ($cars as $car) {
+            $this->assertSame($expected[$car->name]['first'], $car->isFirstResult());
+            $this->assertSame($expected[$car->name]['last'], $car->isLastResult());
+        }
     }
 
-    public function testfindManyFirstAndLastDiffOrder(){
+    public function testfindManyFirstAndLastDiffOrder() {
         $cars = Car::order_by_desc('id')->find_many();
 
         $expected = array(
-			'Car1' => array(
-				'first' => false,
-				'last' => true,
-			),
-			'Car2' => array(
-				'first' => false,
-				'last' => false,
-			),
-			'Car3' => array(
-				'first' => false,
-				'last' => false,
-			),
-			'Car4' => array(
-				'first' => false,
-				'last' => false,
-			),
-			'Car6' => array(
-				'first' => true,
-				'last' => false,
-			),
+            'Car1' => array(
+                'first' => false,
+                'last' => true,
+            ),
+            'Car2' => array(
+                'first' => false,
+                'last' => false,
+            ),
+            'Car3' => array(
+                'first' => false,
+                'last' => false,
+            ),
+            'Car4' => array(
+                'first' => false,
+                'last' => false,
+            ),
+            'Car6' => array(
+                'first' => true,
+                'last' => false,
+            ),
         );
-		foreach ($cars as $car) {
-			$this->assertSame($expected[$car->name]['first'], $car->isFirstResult());
-			$this->assertSame($expected[$car->name]['last'], $car->isLastResult());
-		}
+        foreach ($cars as $car) {
+            $this->assertSame($expected[$car->name]['first'], $car->isFirstResult());
+            $this->assertSame($expected[$car->name]['last'], $car->isLastResult());
+        }
     }
 
-    public function testRelatedModelFirstAndLast(){
+    public function testRelatedModelFirstAndLast() {
         $cars = Car::find_many();
-		// SELECT * FROM `car`
+        // SELECT * FROM `car`
 
         $expected = array(
-			'Car1' => array(
-				0 => array(
-					'first' => true,
-					'last' => false,
-				),
-				1 => array(
-					'first' => false,
-					'last' => false,
-				),
-				2 => array(
-					'first' => false,
-					'last' => true,
-				),
-			),
-			'Car2' => array(
-				0 => array(
-					'first' => true,
-					'last' => false,
-				),
-				1 => array(
-					'first' => false,
-					'last' => true,
-				),
-			),
-			'Car3' => array(
-				0 => array(
-					'first' => true,
-					'last' => false,
-				),
-				1 => array(
-					'first' => false,
-					'last' => true,
-				),
-			),
-			'Car4' => array(
-				0 => array(
-					'first' => true,
-					'last' => false,
-				),
-				1 => array(
-					'first' => false,
-					'last' => true,
-				),
-			),
+            'Car1' => array(
+                0 => array(
+                    'first' => true,
+                    'last' => false,
+                ),
+                1 => array(
+                    'first' => false,
+                    'last' => false,
+                ),
+                2 => array(
+                    'first' => false,
+                    'last' => true,
+                ),
+            ),
+            'Car2' => array(
+                0 => array(
+                    'first' => true,
+                    'last' => false,
+                ),
+                1 => array(
+                    'first' => false,
+                    'last' => true,
+                ),
+            ),
+            'Car3' => array(
+                0 => array(
+                    'first' => true,
+                    'last' => false,
+                ),
+                1 => array(
+                    'first' => false,
+                    'last' => true,
+                ),
+            ),
+            'Car4' => array(
+                0 => array(
+                    'first' => true,
+                    'last' => false,
+                ),
+                1 => array(
+                    'first' => false,
+                    'last' => true,
+                ),
+            ),
         );
-		foreach ($cars as $car) {
-			$partcounter = 0;
-			foreach ($car->parts as $part) {
-				$this->assertSame($expected[$car->name][$partcounter]['first'], $part->isFirstResult());
-				$this->assertSame($expected[$car->name][$partcounter]['last'], $part->isLastResult());
-				$partcounter++;
-			}
-		}
+        foreach ($cars as $car) {
+            $partcounter = 0;
+            foreach ($car->parts as $part) {
+                $this->assertSame($expected[$car->name][$partcounter]['first'], $part->isFirstResult());
+                $this->assertSame($expected[$car->name][$partcounter]['last'], $part->isLastResult());
+                $partcounter++;
+            }
+        }
     }
 
-    public function testRelatedModelFirstAndLastEager(){
+    public function testRelatedModelFirstAndLastEager() {
         $cars = Car::with('parts')->find_many();
-		// SELECT `part`.*, `car_part`.`car_id` FROM `part` JOIN `car_part` ON `part`.`id` = `car_part`.`part_id` WHERE `car_part`.`car_id` IN ('1', '2', '3', '4')
+        // SELECT `part`.*, `car_part`.`car_id` FROM `part` JOIN `car_part` ON `part`.`id` = `car_part`.`part_id` WHERE `car_part`.`car_id` IN ('1', '2', '3', '4')
 
         $expected = array(
-			'Car1' => array(
-				0 => array(
-					'first' => true,
-					'last' => false,
-				),
-				1 => array(
-					'first' => false,
-					'last' => false,
-				),
-				2 => array(
-					'first' => false,
-					'last' => true,
-				),
-			),
-			'Car2' => array(
-				0 => array(
-					'first' => true,
-					'last' => false,
-				),
-				1 => array(
-					'first' => false,
-					'last' => true,
-				),
-			),
-			'Car3' => array(
-				0 => array(
-					'first' => true,
-					'last' => false,
-				),
-				1 => array(
-					'first' => false,
-					'last' => true,
-				),
-			),
-			'Car4' => array(
-				0 => array(
-					'first' => true,
-					'last' => false,
-				),
-				1 => array(
-					'first' => false,
-					'last' => true,
-				),
-			),
+            'Car1' => array(
+                0 => array(
+                    'first' => true,
+                    'last' => false,
+                ),
+                1 => array(
+                    'first' => false,
+                    'last' => false,
+                ),
+                2 => array(
+                    'first' => false,
+                    'last' => true,
+                ),
+            ),
+            'Car2' => array(
+                0 => array(
+                    'first' => true,
+                    'last' => false,
+                ),
+                1 => array(
+                    'first' => false,
+                    'last' => true,
+                ),
+            ),
+            'Car3' => array(
+                0 => array(
+                    'first' => true,
+                    'last' => false,
+                ),
+                1 => array(
+                    'first' => false,
+                    'last' => true,
+                ),
+            ),
+            'Car4' => array(
+                0 => array(
+                    'first' => true,
+                    'last' => false,
+                ),
+                1 => array(
+                    'first' => false,
+                    'last' => true,
+                ),
+            ),
         );
-		foreach ($cars as $car) {
-			$partcounter = 0;
-			foreach ($car->parts as $part) {
-				$this->assertSame($expected[$car->name][$partcounter]['first'], $part->isFirstResult());
-				$this->assertSame($expected[$car->name][$partcounter]['last'], $part->isLastResult());
-				$partcounter++;
-			}
-		}
+        foreach ($cars as $car) {
+            $partcounter = 0;
+            foreach ($car->parts as $part) {
+                $this->assertSame($expected[$car->name][$partcounter]['first'], $part->isFirstResult());
+                $this->assertSame($expected[$car->name][$partcounter]['last'], $part->isLastResult());
+                $partcounter++;
+            }
+        }
     }
 
-    public function testfindMany(){
+    public function testfindMany() {
         $cars = Car::find_many();
-		// Not an empty array
-		$this->assertNotSame(array(), $cars);
+        // Not an empty array
+        $this->assertNotSame(array(), $cars);
         $this->assertEquals(true, $cars->has_results());
 
         $expected = array(
@@ -423,34 +423,34 @@ class GranadaNewTest extends PHPUnit_Framework_TestCase {
             '4' => 'Car4',
             '6' => 'Car6',
         );
-		foreach ($cars as $id => $car) {
-        	$this->assertEquals($id, $car->id);
-        	$this->assertEquals($expected[$id], $car->name);
-		}
+        foreach ($cars as $id => $car) {
+            $this->assertEquals($id, $car->id);
+            $this->assertEquals($expected[$id], $car->name);
+        }
     }
 
-    public function testfindManyFiltered(){
-        $cars = Car::where('id',3)->find_many();
-		// Not an empty array
-		$this->assertNotSame(array(), $cars);
+    public function testfindManyFiltered() {
+        $cars = Car::where('id', 3)->find_many();
+        // Not an empty array
+        $this->assertNotSame(array(), $cars);
 
         $expected = array(
             '3' => 'Car3',
         );
-		foreach ($cars as $id => $car) {
-        	$this->assertEquals($id, $car->id);
-        	$this->assertEquals($expected[$id], $car->name);
-		}
+        foreach ($cars as $id => $car) {
+            $this->assertEquals($id, $car->id);
+            $this->assertEquals($expected[$id], $car->name);
+        }
     }
 
-    public function testNoResultsfindMany(){
-        $cars = Car::where('id',10)->find_many();
+    public function testNoResultsfindMany() {
+        $cars = Car::where('id', 10)->find_many();
         $this->assertSame(array(), $cars->as_array());
         $this->assertEquals(0, count($cars));
         $this->assertEquals(false, $cars->has_results());
     }
 
-    public function testfilters(){
+    public function testfilters() {
         $car = Car::byName('Car1')->find_one();
         $this->assertEquals($car->name, 'Car1');
     }
@@ -458,18 +458,18 @@ class GranadaNewTest extends PHPUnit_Framework_TestCase {
     /**
      * @expectedException Exception
      */
-    public function testnonExistentFilter(){
+    public function testnonExistentFilter() {
         $car = Car::test('Car1')->find_one();
     }
 
-    public function testInsert(){
+    public function testInsert() {
         Car::insert(array(
             array(
-                'id'=> '20',
-                'name' =>'Car20',
-                'manufactor_id'=>  1,
-                'owner_id'=>  1,
-				'is_deleted' => 0,
+                'id' => '20',
+                'name' => 'Car20',
+                'manufactor_id' =>  1,
+                'owner_id' =>  1,
+                'is_deleted' => 0,
             )
         ));
         $count = Car::count();
@@ -486,14 +486,14 @@ class GranadaNewTest extends PHPUnit_Framework_TestCase {
         $this->assertEquals(6, $count, 'Car must be Inserted');
     }
 
-    public function testInsertDeleted(){
+    public function testInsertDeleted() {
         Car::insert(array(
             array(
-                'id'=> '20',
-                'name' =>'Car20',
-                'manufactor_id'=>  1,
-                'owner_id'=>  1,
-				'is_deleted' => 1,
+                'id' => '20',
+                'name' => 'Car20',
+                'manufactor_id' =>  1,
+                'owner_id' =>  1,
+                'is_deleted' => 1,
             )
         ));
         $count = Car::count();
@@ -567,12 +567,13 @@ class GranadaNewTest extends PHPUnit_Framework_TestCase {
             'stealth' => '0',
             'created_at' => null,
             'updated_at' => null,
+            'sort_order' => '6',
         );
         $this->assertEquals($expected, $car->clean_values());
         $car->save();
         // Changes after save
         $expected['manufactor_id'] = 2;
+        $expected['sort_order'] = 6;
         $this->assertEquals($expected, $car->clean_values());
     }
-
 }

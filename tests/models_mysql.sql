@@ -12,6 +12,7 @@ CREATE TABLE `car` (
   `enabled` tinyint(1) DEFAULT 1,
   `stealth` tinyint(1) DEFAULT 0,
   `is_deleted` tinyint(1) DEFAULT 1,
+  `sort_order` int(11) DEFAULT NULL,
   `created_at` datetime DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL,
   PRIMARY KEY (`id`),
@@ -23,13 +24,13 @@ CREATE TABLE `car` (
   CONSTRAINT `car_ibfk_2` FOREIGN KEY (`owner_id`) REFERENCES `owner` (`id`) ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-INSERT INTO `car` (`id`, `name`, `manufactor_id`, `owner_id`, `enabled`, `stealth`, `is_deleted`, `created_at`, `updated_at`) VALUES
-(1,	'Car1',	1,	1,	1,	0,	0,	NULL,	NULL),
-(2,	'Car2',	1,	2,	1,	0,	0,	NULL,	NULL),
-(3,	'Car3',	2,	3,	1,	0,	0,	NULL,	NULL),
-(4,	'Car4',	2,	4,	1,	0,	0,	NULL,	NULL),
-(5,	'Car5',	2,	4,	1,	0,	1,	NULL,	NULL),
-(6,	'Car6',	2,	4,	0,	0,	0,	NULL,	NULL);
+INSERT INTO `car` (`id`, `name`, `manufactor_id`, `owner_id`, `enabled`, `stealth`, `is_deleted`, `sort_order`, `created_at`, `updated_at`) VALUES
+(1,	'Car1',	1,	1,	1,	0,	0,	1, NULL,	NULL),
+(2,	'Car2',	1,	2,	1,	0,	0,	2, NULL,	NULL),
+(3,	'Car3',	2,	3,	1,	0,	0,	3, NULL,	NULL),
+(4,	'Car4',	2,	4,	1,	0,	0,	5, NULL,	NULL),
+(5,	'Car5',	2,	4,	1,	0,	1,	6, NULL,	NULL),
+(6,	'Car6',	2,	4,	0,	0,	0,	4, NULL,	NULL);
 
 DROP TABLE IF EXISTS `car_part`;
 CREATE TABLE `car_part` (

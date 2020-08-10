@@ -19,6 +19,7 @@ namespace MyAppTest;
  * @property bool $enabled
  * @property bool $stealth
  * @property bool $is_deleted
+ * @property integer $sort_order
  * @property string $created_at
  * @property \Cake\Chronos\Chronos $created_at_chronos
  * @property string $updated_at
@@ -88,6 +89,7 @@ abstract class BaseCar extends \MyAppTest\ORMBaseClass {
 			'enabled' => 'bool',
 			'stealth' => 'bool',
 			'is_deleted' => 'bool',
+			'sort_order' => 'integer',
 			'created_at' => 'datetime',
 			'updated_at' => 'datetime',
 		);
@@ -136,7 +138,7 @@ abstract class BaseCar extends \MyAppTest\ORMBaseClass {
 	 * The column used as the main identifier for the model
 	 */
 	public static function defaultOrder() {
-		return 'id';
+		return 'sort_order';
 	}
 
 	/**
@@ -182,6 +184,7 @@ abstract class BaseCar extends \MyAppTest\ORMBaseClass {
 			'enabled',
 			'stealth',
 			'is_deleted',
+			'sort_order',
 		);
 	}
 
@@ -200,6 +203,7 @@ abstract class BaseCar extends \MyAppTest\ORMBaseClass {
 			'enabled' => true,
 			'stealth' => true,
 			'is_deleted' => true,
+			'sort_order' => true,
 			'created_at' => true,
 			'updated_at' => true,
 		));

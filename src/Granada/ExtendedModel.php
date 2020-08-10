@@ -246,6 +246,12 @@ class ExtendedModel extends Model {
      */
     public function save($ignore = false) {
         $isnew = $this->is_new();
+        // Check sort order
+        if ($this->hasAttribute('sort_order')) {
+            if (!$this->sort_order) {
+                $this->sort_order = $this->model()->max('sort_order') + 1;
+            }
+        }
 
         $doTimestamps = $this->hasAttribute('updated_at');
         if ($doTimestamps) {

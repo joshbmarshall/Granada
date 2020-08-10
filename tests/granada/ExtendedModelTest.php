@@ -472,7 +472,7 @@ class ExtendedModelTest extends PHPUnit_Framework_TestCase {
         ));
         $count = \MyAppTest\Car::model()->count();
         $expectedSql   = array();
-        $expectedSql[] = "INSERT INTO `car` (`id`, `name`, `manufactor_id`, `owner_id`, `is_deleted`, `updated_at`, `created_at`) VALUES ('20', 'Car20', '1', '1', '0', '2020-08-10 22:33:52', '2020-08-10 22:33:52')";
+        $expectedSql[] = "INSERT INTO `car` (`id`, `name`, `manufactor_id`, `owner_id`, `is_deleted`, `sort_order`, `updated_at`, `created_at`) VALUES ('20', 'Car20', '1', '1', '0', '7', '2020-08-10 22:33:52', '2020-08-10 22:33:52')";
         $expectedSql[] = "SELECT * FROM `car` WHERE `car`.`is_deleted` = '0' AND `id` = '20' LIMIT 1";
         $expectedSql[] = "SELECT COUNT(*) AS `count` FROM `car` WHERE `car`.`is_deleted` = '0' LIMIT 1";
 
@@ -497,7 +497,7 @@ class ExtendedModelTest extends PHPUnit_Framework_TestCase {
         ));
         $count = \MyAppTest\Car::model()->count();
         $expectedSql   = array();
-        $expectedSql[] = "INSERT INTO `car` (`id`, `name`, `manufactor_id`, `owner_id`, `is_deleted`, `updated_at`, `created_at`) VALUES ('20', 'Car20', '1', '1', '1', '2020-08-10 22:33:52', '2020-08-10 22:33:52')";
+        $expectedSql[] = "INSERT INTO `car` (`id`, `name`, `manufactor_id`, `owner_id`, `is_deleted`, `sort_order`, `updated_at`, `created_at`) VALUES ('20', 'Car20', '1', '1', '1', '7', '2020-08-10 22:33:52', '2020-08-10 22:33:52')";
         $expectedSql[] = "SELECT * FROM `car` WHERE `car`.`is_deleted` = '0' AND `id` = '20' LIMIT 1";
         $expectedSql[] = "SELECT COUNT(*) AS `count` FROM `car` WHERE `car`.`is_deleted` = '0' LIMIT 1";
 
@@ -565,6 +565,7 @@ class ExtendedModelTest extends PHPUnit_Framework_TestCase {
             'enabled' => '1',
             'stealth' => '0',
             'is_deleted' => '0',
+            'sort_order' => '6',
             'created_at' => null,
             'updated_at' => null,
         );
@@ -607,7 +608,7 @@ class ExtendedModelTest extends PHPUnit_Framework_TestCase {
 
         $expectedSql   = array();
         // Stores datetime in UTC timezone
-        $expectedSql[] = "INSERT INTO `car` (`name`, `updated_at`, `created_at`) VALUES ('Test', '2020-08-10 22:33:52', '2020-08-10 22:33:52')";
+        $expectedSql[] = "INSERT INTO `car` (`name`, `sort_order`, `updated_at`, `created_at`) VALUES ('Test', '7', '2020-08-10 22:33:52', '2020-08-10 22:33:52')";
         $expectedSql[] = "SELECT * FROM `car` WHERE `car`.`is_deleted` = '0' AND `id` = '7' LIMIT 1";
 
         $fullQueryLog = ORM::get_query_log();
@@ -649,6 +650,13 @@ class ExtendedModelTest extends PHPUnit_Framework_TestCase {
         $this->assertSame('2020-08-11 05:08:22', $car->updated_at);
         $this->assertSame('2020-08-11 05:08:22', $car->updated_at_chronos->toDateTimeString());
         $this->assertSame('America/Chicago', $car->updated_at_chronos->timezoneName);
+    }
+
+    public function testSortOrder() {
+        $car = \MyAppTest\Car::create(array(
+            'name' => 'New Car',
+        ))->save();
+        $this->assertSame(7, $car->sort_order);
     }
 
     public function testTimezoneInWhere() {

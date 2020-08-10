@@ -125,6 +125,18 @@ namespace MyAppTest;
  * @method \MyAppTest\QueryCar where_is_deleted_not_in(string[] $values) Add a WHERE is_deleted NOT IN clause to your query
  * @method \MyAppTest\QueryCar where_is_deleted_null() Add a WHERE is_deleted IS NULL clause to your query
  * @method \MyAppTest\QueryCar where_is_deleted_not_null() Add a WHERE is_deleted IS NOT NULL clause to your query
+ * @method \MyAppTest\QueryCar where_sort_order(string $value) Add a WHERE sort_order = clause to your query
+ * @method \MyAppTest\QueryCar where_sort_order_not_equal(string $value) Add a WHERE sort_order != clause to your query
+ * @method \MyAppTest\QueryCar where_sort_order_like(string $value) Add a WHERE sort_order LIKE clause to your query.
+ * @method \MyAppTest\QueryCar where_sort_order_not_like(string $value) Add where WHERE sort_order NOT LIKE clause to your query.
+ * @method \MyAppTest\QueryCar where_sort_order_gt(string $value) Add a WHERE sort_order > clause to your query
+ * @method \MyAppTest\QueryCar where_sort_order_lt(string $value) Add a WHERE sort_order < clause to your query
+ * @method \MyAppTest\QueryCar where_sort_order_gte(string $value) Add a WHERE sort_order >= clause to your query
+ * @method \MyAppTest\QueryCar where_sort_order_lte(string $value) Add a WHERE sort_order <= clause to your query
+ * @method \MyAppTest\QueryCar where_sort_order_in(string $values) Add a WHERE sort_order IN clause to your query
+ * @method \MyAppTest\QueryCar where_sort_order_not_in(string[] $values) Add a WHERE sort_order NOT IN clause to your query
+ * @method \MyAppTest\QueryCar where_sort_order_null() Add a WHERE sort_order IS NULL clause to your query
+ * @method \MyAppTest\QueryCar where_sort_order_not_null() Add a WHERE sort_order IS NOT NULL clause to your query
  * @method \MyAppTest\QueryCar where_created_at(\Cake\Chronos\Chronos $value) Add a WHERE created_at = clause to your query
  * @method \MyAppTest\QueryCar where_created_at_not_equal(\Cake\Chronos\Chronos $value) Add a WHERE created_at != clause to your query
  * @method \MyAppTest\QueryCar where_created_at_gt(\Cake\Chronos\Chronos $value) Add a WHERE created_at > clause to your query
@@ -172,6 +184,10 @@ namespace MyAppTest;
  * @method \MyAppTest\QueryCar order_by_is_deleted_desc() Add an ORDER BY column DESC clause for is_deleted
  * @method \MyAppTest\QueryCar order_by_is_deleted_natural_asc() Add an ORDER BY column ASC clause using natural sorting method for is_deleted
  * @method \MyAppTest\QueryCar order_by_is_deleted_natural_desc() Add an ORDER BY column DESC clause using natural sorting method for is_deleted
+ * @method \MyAppTest\QueryCar order_by_sort_order_asc() Add an ORDER BY column ASC clause for sort_order
+ * @method \MyAppTest\QueryCar order_by_sort_order_desc() Add an ORDER BY column DESC clause for sort_order
+ * @method \MyAppTest\QueryCar order_by_sort_order_natural_asc() Add an ORDER BY column ASC clause using natural sorting method for sort_order
+ * @method \MyAppTest\QueryCar order_by_sort_order_natural_desc() Add an ORDER BY column DESC clause using natural sorting method for sort_order
  * @method \MyAppTest\QueryCar order_by_created_at_asc() Add an ORDER BY column ASC clause for created_at
  * @method \MyAppTest\QueryCar order_by_created_at_desc() Add an ORDER BY column DESC clause for created_at
  * @method \MyAppTest\QueryCar order_by_created_at_natural_asc() Add an ORDER BY column ASC clause using natural sorting method for created_at
