@@ -471,7 +471,7 @@ class ExtendedModelTest extends PHPUnit_Framework_TestCase {
         ));
         $count = \MyAppTest\Car::model()->count();
         $expectedSql   = array();
-        $expectedSql[] = "INSERT INTO `car` (`id`, `name`, `manufactor_id`, `owner_id`, `is_deleted`) VALUES ('20', 'test', '1', '1', '0')";
+        $expectedSql[] = "INSERT INTO `car` (`id`, `name`, `manufactor_id`, `owner_id`, `is_deleted`) VALUES ('20', 'Car20', '1', '1', '0')";
         $expectedSql[] = "SELECT COUNT(*) AS `count` FROM `car` WHERE `car`.`is_deleted` = '0' LIMIT 1";
 
         $fullQueryLog = ORM::get_query_log();
@@ -495,7 +495,7 @@ class ExtendedModelTest extends PHPUnit_Framework_TestCase {
         ));
         $count = \MyAppTest\Car::model()->count();
         $expectedSql   = array();
-        $expectedSql[] = "INSERT INTO `car` (`id`, `name`, `manufactor_id`, `owner_id`, `is_deleted`) VALUES ('20', 'test', '1', '1', '1')";
+        $expectedSql[] = "INSERT INTO `car` (`id`, `name`, `manufactor_id`, `owner_id`, `is_deleted`) VALUES ('20', 'Car20', '1', '1', '1')";
         $expectedSql[] = "SELECT COUNT(*) AS `count` FROM `car` WHERE `car`.`is_deleted` = '0' LIMIT 1";
 
         $fullQueryLog = ORM::get_query_log();
@@ -584,27 +584,73 @@ class ExtendedModelTest extends PHPUnit_Framework_TestCase {
     }
 
     public function testFindPairsRepresentative() {
+        // Representation of cars is id (as name is null) so we will get a list of names
+        $cars = \MyAppTest\Car::model()
+            ->find_pairs_representation();
+        $this->assertSame(array(
+            1 => 1,
+            2 => 2,
+            3 => 3,
+            4 => 4,
+            6 => 6,
+        ), $cars);
     }
 
     public function testTimezone() {
     }
 
     public function testBeforeSave() {
+        $carPart = \MyAppTest\CarPart::model()->find_one(1);
+        $this->assertSame(1, $carPart->car_id);
+
+        $carPart->save();
+
+        $this->assertSame(1, $carPart->part_id);
+        $this->assertSame(4, $carPart->car_id);
     }
 
     public function testBeforeSaveNew() {
+        $carPart = \MyAppTest\CarPart::create(array(
+            'car_id' => 2,
+        ))->save();
+
+        $this->assertSame(3, $carPart->part_id);
+        $this->assertSame(4, $carPart->car_id);
     }
 
     public function testAfterSave() {
+        $carPart = \MyAppTest\CarPart::model()->find_one(1);
+        $this->assertSame('Car1', $carPart->car->name);
+        $carPart->save();
+        $this->assertSame('Is Car Saved', $carPart->car->name);
     }
 
     public function testAfterSaveNew() {
+        $carPart = \MyAppTest\CarPart::create(array(
+            'car_id' => 2,
+        ))->save();
+
+        $this->assertSame('Is Car Created', $carPart->car->name);
     }
 
     public function testBeforeDelete() {
+        $carPart = \MyAppTest\CarPart::model()->find_one(1);
+        $car = $carPart->car;
+        $this->assertSame('Car1', $car->name);
+        $carPart->delete();
+        $car->reload();
+        $this->assertSame('Before Delete', $car->name);
+        $carPart = \MyAppTest\CarPart::model()->find_one(1);
+        $this->assertSame(false, $carPart);
     }
 
     public function testAfterDelete() {
+        $carPart = \MyAppTest\CarPart::model()->find_one(1);
+        $part = $carPart->part;
+        $this->assertSame('Part1', $part->name);
+        $carPart->delete();
+        $part->reload();
+        $this->assertSame('After Delete', $part->name);
     }
 
 }

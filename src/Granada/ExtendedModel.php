@@ -237,8 +237,59 @@ class ExtendedModel extends Model {
         return $query;
     }
 
+    /**
+     * Save the model, apply before and after save functions
+     *
+     * @param bool $ignore If the id already exists on insert, do an update instead
+     * @return $this
+     * @throws \PDOException
+     */
     public function save($ignore = false) {
+        $isnew = $this->is_new();
+
+        if ($isnew) {
+            $this->beforeSaveNew();
+        }
+        $this->beforeSave();
         parent::save($ignore);
+        $this->reload(); // Update all references and changed ids take effect
+        $this->afterSave();
+        if ($isnew) {
+            $this->afterSaveNew();
+        }
         return $this;
+    }
+
+    /**
+     * Delete the record from the database, executing before and after functions
+     * @return bool Success
+     * @throws \PDOException
+     */
+    public function delete() {
+        $this->beforeDelete();
+        $success = parent::delete();
+        $this->afterDelete();
+        return $success;
+    }
+
+    /**
+     * Load the item again from the database, to refresh the data in case of changes
+     * @return void
+     */
+    public function reload() {
+        $new_version = $this->model()->find_one($this->id);
+        if ($new_version) {
+            $this->orm->hydrate($new_version->as_array());
+            $this->relationships = array();
+        }
+    }
+
+    /**
+     * Alias of reload
+     *
+     * @return void
+     */
+    public function refresh() {
+        $this->reload();
     }
 }
