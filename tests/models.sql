@@ -37,6 +37,17 @@ CREATE TABLE car_part (
     FOREIGN KEY (part_id) REFERENCES part (id)
 );
 
+CREATE TABLE timezone_test (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    datetime1 DATETIME,
+    datetime2 DATETIME,
+    datetime3 DATETIME,
+    datetime4 DATETIME,
+    datetime5 DATETIME,
+    date1 DATE,
+    time1 TIME
+);
+
 INSERT INTO manufactor(id,name) VALUES (1, 'Manufactor1');
 INSERT INTO manufactor(id,name) VALUES (2, 'Manufactor2');
 
@@ -68,3 +79,5 @@ INSERT INTO car_part(id,car_id,part_id) VALUES (6,2,3);
 INSERT INTO car_part(id,car_id,part_id) VALUES (7,3,4);
 INSERT INTO car_part(id,car_id,part_id) VALUES (8,4,5);
 INSERT INTO car_part(id,car_id,part_id) VALUES (9,1,1);
+
+INSERT INTO timezone_test(id,datetime1,datetime2,datetime3,datetime4,datetime5,date1,time1) VALUES (1, '2020-08-11 21:47:18', '2020-08-11 21:47:18', '2020-08-11 21:47:18', '2020-08-11 21:47:18', '2020-08-11 21:47:18', '2020-08-11', '21:47:18');

@@ -34,6 +34,21 @@ class ExtendedModel extends Model {
     public function afterDelete() {
     }
 
+    /**
+     * The timezone for datetime fields stored in the database
+     * @var string
+     */
+    private static $_database_timezone = 'Etc/UTC';
+
+    /**
+     * Set the timezone used for datetime fields in the database
+     * @param string $timezone e.g. 'Etc/UTC'
+     * @return void
+     */
+    public function setDatabaseTimezone($timezone) {
+        self::$_database_timezone = $timezone;
+    }
+
     public function __get($property) {
         // Auto-get Chronos variable type
         if (substr($property, -8) == '_chronos') {
@@ -48,7 +63,7 @@ class ExtendedModel extends Model {
                 } else if ($datetype['timezone_mode'] == 'site') {
                     return \Cake\Chronos\Chronos::parse($this->$propertybase, $class::siteTimezone());
                 } else {
-                    return \Cake\Chronos\Chronos::parse($this->$propertybase, 'Etc/UTC');
+                    return \Cake\Chronos\Chronos::parse($this->$propertybase, self::$_database_timezone);
                 }
             }
             return \Cake\Chronos\Chronos::parse($this->$propertybase);
@@ -63,7 +78,7 @@ class ExtendedModel extends Model {
             if ($datetype['type'] == 'time') {
                 $date = \Cake\Chronos\Chronos::parse($rawval);
             } else {
-                $date = \Cake\Chronos\Chronos::parse($rawval, 'Etc/UTC');
+                $date = \Cake\Chronos\Chronos::parse($rawval, self::$_database_timezone);
             }
             if ($datetype['type'] == 'date') {
                 // No timezone adjustment for date
@@ -126,11 +141,11 @@ class ExtendedModel extends Model {
                         }
                     } else {
                         if ($datetype['timezone_mode'] == 'user') {
-                            $date = \Cake\Chronos\Chronos::parse($value);
+                            $date = \Cake\Chronos\Chronos::parse($value, $class::currentTimezone());
                         } else if ($datetype['timezone_mode'] == 'site') {
                             $date = \Cake\Chronos\Chronos::parse($value, $class::siteTimezone());
                         } else {
-                            $date = \Cake\Chronos\Chronos::parse($value, 'Etc/UTC');
+                            $date = \Cake\Chronos\Chronos::parse($value, self::$_database_timezone);
                         }
                     }
                 }
@@ -140,7 +155,7 @@ class ExtendedModel extends Model {
             } elseif ($datetype['type'] == 'dob') {
                 $value = $date->toDateString();
             } elseif ($datetype['type'] == 'datetime') {
-                $date = $date->timezone('Etc/UTC');
+                $date = $date->timezone(self::$_database_timezone);
                 $value = $date->toDateTimeString();
             } elseif ($datetype['type'] == 'time') {
                 $date = $date->timezone('Etc/UTC');
@@ -186,7 +201,7 @@ class ExtendedModel extends Model {
             } else if ($datetype['timezone_mode'] == 'none') {
                 $timezone = $value->timezone; // No timezone, time is time of day regardless of the time zone checking against
             } else {
-                $timezone = 'Etc/UTC';
+                $timezone = self::$_database_timezone;
             }
 
             $value = $value->timezone($timezone)->format($datetype['format']);

@@ -38,6 +38,7 @@ class ExtendedModelTest extends PHPUnit_Framework_TestCase {
 
         // Enable logging
         ORM::configure('logging', true);
+        \MyAppTest\Car::create()->setDatabaseTimezone('Etc/UTC');
     }
 
     public function tearDown() {
@@ -66,11 +67,10 @@ class ExtendedModelTest extends PHPUnit_Framework_TestCase {
 
     public function testNewItemBlankID() {
         $car = \MyAppTest\Car::create(array(
-            'id' => '',
             'name' => 'New Car',
         ));
         $car->save();
-        $this->assertSame(9, $car->id);
+        $this->assertSame(7, $car->id);
     }
 
     public function testSetterForRelationship() {
@@ -727,5 +727,186 @@ class ExtendedModelTest extends PHPUnit_Framework_TestCase {
         $carPart->delete();
         $part->reload();
         $this->assertSame('After Delete', $part->name);
+    }
+
+    public function testTimezonesStoredUTC() {
+
+        $timezoneTest = \MyAppTest\TimezoneTest::model()->find_one(1);
+
+        $this->assertSame('2020-08-11 16:47:18', $timezoneTest->datetime1);
+        $this->assertSame('2020-08-11 16:47:18', $timezoneTest->datetime1_chronos->toDateTimeString());
+        $this->assertSame('America/Chicago', $timezoneTest->datetime1_chronos->getTimezone()->getName());
+        $this->assertSame('2020-08-11 21:47:18', $timezoneTest->datetime2);
+        $this->assertSame('2020-08-11 21:47:18', $timezoneTest->datetime2_chronos->toDateTimeString());
+        $this->assertSame('Etc/UTC', $timezoneTest->datetime2_chronos->getTimezone()->getName());
+        $this->assertSame('2020-08-12 05:47:18', $timezoneTest->datetime3);
+        $this->assertSame('2020-08-12 05:47:18', $timezoneTest->datetime3_chronos->toDateTimeString());
+        $this->assertSame('Australia/Perth', $timezoneTest->datetime3_chronos->getTimezone()->getName());
+        $this->assertSame('2020-08-11 16:47:18', $timezoneTest->datetime4);
+        $this->assertSame('2020-08-11 16:47:18', $timezoneTest->datetime4_chronos->toDateTimeString());
+        $this->assertSame('America/Chicago', $timezoneTest->datetime4_chronos->getTimezone()->getName());
+        $this->assertSame('2020-08-11 16:47:18', $timezoneTest->datetime5);
+        $this->assertSame('2020-08-11 16:47:18', $timezoneTest->datetime5_chronos->toDateTimeString());
+        $this->assertSame('America/Chicago', $timezoneTest->datetime5_chronos->getTimezone()->getName());
+
+        $this->assertSame('2020-08-11', $timezoneTest->date1);
+        $this->assertSame('2020-08-11 00:00:00', $timezoneTest->date1_chronos->toDateTimeString());
+        $this->assertSame('Australia/Brisbane', $timezoneTest->date1_chronos->getTimezone()->getName());
+
+        $this->assertSame('21:47:18', $timezoneTest->time1);
+        $this->assertSame('2020-08-10 21:47:18', $timezoneTest->time1_chronos->toDateTimeString());
+        $this->assertSame('Etc/UTC', $timezoneTest->time1_chronos->getTimezone()->getName());
+
+        // Test searches
+        $item = \MyAppTest\TimezoneTest::model()
+            ->where_datetime1_gt(\Cake\Chronos\Chronos::now())
+            ->where_datetime2_gt(\Cake\Chronos\Chronos::now())
+            ->where_datetime3_gt(\Cake\Chronos\Chronos::now())
+            ->where_datetime4_gt(\Cake\Chronos\Chronos::now())
+            ->where_datetime5_gt(\Cake\Chronos\Chronos::now())
+            ->find_one();
+        $this->assertSame("SELECT * FROM `timezone_test` WHERE `datetime1` > '2020-08-10 22:33:52' AND `datetime2` > '2020-08-11 08:33:52' AND `datetime3` > '2020-08-10 22:33:52' AND `datetime4` > '2020-08-10 17:33:52' AND `datetime5` > '2020-08-11 06:33:52' LIMIT 1", \MyAppTest\TimezoneTest::get_last_query());
+
+        // Set Chronos
+        $item->datetime1 = \Cake\Chronos\Chronos::now();
+        $item->datetime2 = \Cake\Chronos\Chronos::now();
+        $item->datetime3 = \Cake\Chronos\Chronos::now();
+        $item->datetime4 = \Cake\Chronos\Chronos::now();
+        $item->datetime5 = \Cake\Chronos\Chronos::now();
+        $item->save();
+        $expectedSql   = array();
+        // Stores datetime in UTC timezone
+        $expectedSql[] = "UPDATE `timezone_test` SET `datetime1` = '2020-08-10 22:33:52', `datetime2` = '2020-08-10 22:33:52', `datetime3` = '2020-08-10 22:33:52', `datetime4` = '2020-08-10 22:33:52', `datetime5` = '2020-08-10 22:33:52' WHERE `id` = '1'";
+        $expectedSql[] = "SELECT * FROM `timezone_test` WHERE `id` = '1' LIMIT 1";
+
+        $fullQueryLog = ORM::get_query_log();
+
+        // Return last two queries
+        $actualSql = array_slice($fullQueryLog, count($fullQueryLog) - 2);
+
+        $this->assertSame($expectedSql, $actualSql);
+
+        // Set Time string
+        $item->datetime1 = '2020-08-15 11:28:52'; // America/Chicago time is 2020-08-15 16:28:52 UTC
+        $this->assertSame('2020-08-15 11:28:52', $item->datetime1);
+        $item->datetime2 = '2020-08-15 11:28:52'; // no timezone time
+        $this->assertSame('2020-08-15 11:28:52', $item->datetime2);
+        $item->datetime3 = '2020-08-15 11:28:52'; // Australia/Perth is 2020-08-15 3:28:52 UTC
+        $this->assertSame('2020-08-15 11:28:52', $item->datetime3);
+        $item->datetime4 = '2020-08-15 11:28:52'; // America/Chicago time is 2020-08-15 16:28:52 UTC
+        $this->assertSame('2020-08-15 11:28:52', $item->datetime4);
+        $item->datetime5 = '2020-08-15 11:28:52'; // America/Chicago time is 2020-08-15 16:28:52 UTC
+        $this->assertSame('2020-08-15 11:28:52', $item->datetime5);
+
+        $item->save();
+
+        $this->assertSame('2020-08-15 11:28:52', $item->datetime1);
+        $this->assertSame('2020-08-15 11:28:52', $item->datetime2);
+        $this->assertSame('2020-08-15 11:28:52', $item->datetime3);
+        $this->assertSame('2020-08-15 11:28:52', $item->datetime4);
+        $this->assertSame('2020-08-15 11:28:52', $item->datetime5);
+
+        $expectedSql   = array();
+        // Stores datetime in UTC timezone
+        $expectedSql[] = "UPDATE `timezone_test` SET `datetime1` = '2020-08-15 16:28:52', `datetime2` = '2020-08-15 11:28:52', `datetime3` = '2020-08-15 03:28:52', `datetime4` = '2020-08-15 16:28:52', `datetime5` = '2020-08-15 16:28:52' WHERE `id` = '1'";
+        $expectedSql[] = "SELECT * FROM `timezone_test` WHERE `id` = '1' LIMIT 1";
+
+        $fullQueryLog = ORM::get_query_log();
+
+        // Return last two queries
+        $actualSql = array_slice($fullQueryLog, count($fullQueryLog) - 2);
+
+        $this->assertSame($expectedSql, $actualSql);
+    }
+
+    public function testTimezonesStoredBrisbane() {
+        $timezoneTest = \MyAppTest\TimezoneTest::model()->find_one(1);
+        $timezoneTest->setDatabaseTimezone('Australia/Brisbane');
+
+        $this->assertSame('2020-08-11 06:47:18', $timezoneTest->datetime1);
+        $this->assertSame('2020-08-11 06:47:18', $timezoneTest->datetime1_chronos->toDateTimeString());
+        $this->assertSame('America/Chicago', $timezoneTest->datetime1_chronos->getTimezone()->getName());
+        $this->assertSame('2020-08-11 21:47:18', $timezoneTest->datetime2);
+        $this->assertSame('2020-08-11 21:47:18', $timezoneTest->datetime2_chronos->toDateTimeString());
+        $this->assertSame('Australia/Brisbane', $timezoneTest->datetime2_chronos->getTimezone()->getName());
+        $this->assertSame('2020-08-11 19:47:18', $timezoneTest->datetime3);
+        $this->assertSame('2020-08-11 19:47:18', $timezoneTest->datetime3_chronos->toDateTimeString());
+        $this->assertSame('Australia/Perth', $timezoneTest->datetime3_chronos->getTimezone()->getName());
+        $this->assertSame('2020-08-11 06:47:18', $timezoneTest->datetime4);
+        $this->assertSame('2020-08-11 06:47:18', $timezoneTest->datetime4_chronos->toDateTimeString());
+        $this->assertSame('America/Chicago', $timezoneTest->datetime4_chronos->getTimezone()->getName());
+        $this->assertSame('2020-08-11 06:47:18', $timezoneTest->datetime5);
+        $this->assertSame('2020-08-11 06:47:18', $timezoneTest->datetime5_chronos->toDateTimeString());
+        $this->assertSame('America/Chicago', $timezoneTest->datetime5_chronos->getTimezone()->getName());
+
+        $this->assertSame('2020-08-11', $timezoneTest->date1);
+        $this->assertSame('2020-08-11 00:00:00', $timezoneTest->date1_chronos->toDateTimeString());
+        $this->assertSame('Australia/Brisbane', $timezoneTest->date1_chronos->getTimezone()->getName());
+
+        $this->assertSame('21:47:18', $timezoneTest->time1);
+        $this->assertSame('2020-08-10 21:47:18', $timezoneTest->time1_chronos->toDateTimeString());
+        $this->assertSame('Australia/Brisbane', $timezoneTest->time1_chronos->getTimezone()->getName());
+
+        // Test searches
+        $item = \MyAppTest\TimezoneTest::model()
+            ->where_datetime1_gt(\Cake\Chronos\Chronos::now())
+            ->where_datetime2_gt(\Cake\Chronos\Chronos::now())
+            ->where_datetime3_gt(\Cake\Chronos\Chronos::now())
+            ->where_datetime4_gt(\Cake\Chronos\Chronos::now())
+            ->where_datetime5_gt(\Cake\Chronos\Chronos::now())
+            ->find_one();
+
+        $this->assertSame("SELECT * FROM `timezone_test` WHERE `datetime1` > '2020-08-11 08:33:52' AND `datetime2` > '2020-08-11 08:33:52' AND `datetime3` > '2020-08-11 08:33:52' AND `datetime4` > '2020-08-10 17:33:52' AND `datetime5` > '2020-08-11 06:33:52' LIMIT 1", \MyAppTest\TimezoneTest::get_last_query());
+
+        // Set
+        $item->datetime1 = \Cake\Chronos\Chronos::now();
+        $item->datetime2 = \Cake\Chronos\Chronos::now();
+        $item->datetime3 = \Cake\Chronos\Chronos::now();
+        $item->datetime4 = \Cake\Chronos\Chronos::now();
+        $item->datetime5 = \Cake\Chronos\Chronos::now();
+        $item->save();
+        $expectedSql   = array();
+        // Stores datetime in Australia/Brisbane timezone
+        $expectedSql[] = "UPDATE `timezone_test` SET `datetime1` = '2020-08-11 08:33:52', `datetime2` = '2020-08-11 08:33:52', `datetime3` = '2020-08-11 08:33:52', `datetime4` = '2020-08-11 08:33:52', `datetime5` = '2020-08-11 08:33:52' WHERE `id` = '1'";
+        $expectedSql[] = "SELECT * FROM `timezone_test` WHERE `id` = '1' LIMIT 1";
+
+        $fullQueryLog = ORM::get_query_log();
+
+        // Return last two queries
+        $actualSql = array_slice($fullQueryLog, count($fullQueryLog) - 2);
+
+        $this->assertSame($expectedSql, $actualSql);
+
+        // Set Time string
+        $item->datetime1 = '2020-08-15 11:28:52'; // America/Chicago time is 2020-08-16 02:28:52 Australia/Brisbane
+        $this->assertSame('2020-08-15 11:28:52', $item->datetime1);
+        $item->datetime2 = '2020-08-15 11:28:52'; // no timezone time
+        $this->assertSame('2020-08-15 11:28:52', $item->datetime2);
+        $item->datetime3 = '2020-08-15 11:28:52'; // Australia/Perth is 2020-08-15 13:28:52 Australia/Brisbane
+        $this->assertSame('2020-08-15 11:28:52', $item->datetime3);
+        $item->datetime4 = '2020-08-15 11:28:52'; // America/Chicago time is 2020-08-16 02:28:52 Australia/Brisbane
+        $this->assertSame('2020-08-15 11:28:52', $item->datetime4);
+        $item->datetime5 = '2020-08-15 11:28:52'; // America/Chicago time is 2020-08-16 02:28:52 Australia/Brisbane
+        $this->assertSame('2020-08-15 11:28:52', $item->datetime5);
+
+        $item->save();
+
+        $this->assertSame('2020-08-15 11:28:52', $item->datetime1);
+        $this->assertSame('2020-08-15 11:28:52', $item->datetime2);
+        $this->assertSame('2020-08-15 11:28:52', $item->datetime3);
+        $this->assertSame('2020-08-15 11:28:52', $item->datetime4);
+        $this->assertSame('2020-08-15 11:28:52', $item->datetime5);
+
+        $expectedSql   = array();
+        // Stores datetime in UTC timezone
+        $expectedSql[] = "UPDATE `timezone_test` SET `datetime1` = '2020-08-16 02:28:52', `datetime2` = '2020-08-15 11:28:52', `datetime3` = '2020-08-15 13:28:52', `datetime4` = '2020-08-16 02:28:52', `datetime5` = '2020-08-16 02:28:52' WHERE `id` = '1'";
+        $expectedSql[] = "SELECT * FROM `timezone_test` WHERE `id` = '1' LIMIT 1";
+
+        $fullQueryLog = ORM::get_query_log();
+
+        // Return last two queries
+        $actualSql = array_slice($fullQueryLog, count($fullQueryLog) - 2);
+
+        $this->assertSame($expectedSql, $actualSql);
     }
 }

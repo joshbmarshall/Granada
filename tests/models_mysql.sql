@@ -92,3 +92,19 @@ INSERT INTO `part` (`id`, `name`) VALUES
 (3,	'Part3'),
 (4,	'Part4'),
 (5,	'Part5');
+
+DROP TABLE IF EXISTS `timezone_test`;
+CREATE TABLE `timezone_test` (
+  `id` int(11) NOT NULL,
+  `datetime1` datetime DEFAULT NULL COMMENT "",
+  `datetime2` datetime DEFAULT NULL COMMENT "_timezone_none",
+  `datetime3` datetime DEFAULT NULL COMMENT "_timezone_sitewide",
+  `datetime4` datetime DEFAULT NULL COMMENT "_timezone_compare_user",
+  `datetime5` datetime DEFAULT NULL COMMENT "_timezone_compare_sitewide",
+  `date1` date DEFAULT NULL,
+  `time1` time DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+INSERT INTO `timezone_test` (`id`, `datetime1`, `datetime2`, `datetime3`, `datetime4`, `datetime5`, `date1`, `time1`) VALUES
+(1, '2020-08-11 21:47:18', '2020-08-11 21:47:18', '2020-08-11 21:47:18', '2020-08-11 21:47:18', '2020-08-11 21:47:18', '2020-08-11', '21:47:18');

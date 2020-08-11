@@ -11,5 +11,4 @@ class ORMBaseClass extends \Granada\ExtendedModel {
     public static function siteTimezone() {
         return 'Australia/Perth';
     }
-
 }

@@ -71,11 +71,10 @@ class GranadaNewTest extends PHPUnit_Framework_TestCase {
 
     public function testNewItemBlankID() {
         $car = Model::factory('Car')->create(array(
-            'id' => '',
             'name' => 'New Car',
         ));
         $car->save();
-        $expected = 9;
+        $expected = 7;
         $this->assertEquals($expected, $car->id);
     }
 
