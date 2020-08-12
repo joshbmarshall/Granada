@@ -15,10 +15,6 @@ namespace {{ namespace }};
 {% if (field.type == 'json' or field.type == 'serialize') %}
  * @property array ${{field.name}}_decoded
 {% endif %}
-{% if (field.type == 'html' or field.type == 'richtext') %}
- * @property string ${{field.name}}_striphtml
- * @property string ${{field.name}}_wordcount
-{% endif %}
 {% if (field.type == 'dob') or (field.type == 'date') or (field.type == 'datetime') or (field.type == 'time') %}
  * @property \Cake\Chronos\Chronos ${{field.name}}_chronos
 {% endif %}
