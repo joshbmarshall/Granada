@@ -1,6 +1,5 @@
 #!/usr/bin/env php
 <?php
-
 $autoloadPath = null;
 $autoloadPaths = array(
 	__DIR__ . '/../../../autoload.php',
