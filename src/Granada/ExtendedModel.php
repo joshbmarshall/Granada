@@ -12,6 +12,9 @@ namespace Granada;
  * @method string avg(string $column) Will return the average value of the chosen column.
  * @method string sum(string $column) Will return the sum of the values of the chosen column.
  * @method boolean delete_many() Delete all matching records
+ * @method boolean hasAttribute(string $attribute) Does this model have this attribute
+ * @method string fieldType(string $attribute) What type of field is this attribute
+ * @method mixed model() The starting point for all queries
  *
  */
 class ExtendedModel extends Model {
