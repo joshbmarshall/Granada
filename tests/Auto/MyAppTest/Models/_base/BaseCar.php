@@ -12,8 +12,6 @@ namespace MyAppTest;
 /**
  * @property integer $id
  * @property string $name
- * @property string $name_striphtml
- * @property string $name_wordcount
  * @property integer $manufactor_id
  * @property integer $owner_id
  * @property bool $enabled

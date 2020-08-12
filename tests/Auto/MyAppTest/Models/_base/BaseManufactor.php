@@ -12,8 +12,6 @@ namespace MyAppTest;
 /**
  * @property integer $id
  * @property string $name
- * @property string $name_striphtml
- * @property string $name_wordcount
  * @property \MyAppTest\Car[] $cars
  *
  * @method \MyAppTest\Manufactor save(boolean $ignore = false) Save and reload the model, optionally ignoring existing id (Use INSERT ON DUPLICATE KEY UPDATE query).
