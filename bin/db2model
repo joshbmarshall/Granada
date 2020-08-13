@@ -27,15 +27,33 @@ if (is_null($autoloadPath)) {
 
 define('BASE_FOLDER', dirname(dirname(dirname(__DIR__))));
 
-if (!array_key_exists(1, $argv)) {
-	die('Please specify config file' . PHP_EOL);
-}
-$configfile = $argv[1];
+$show_config_file_template = false;
+if (array_key_exists(1, $argv)) {
+	$configfile = $argv[1];
 
-if (!file_exists($configfile)) {
-	die('Config file does not exist' . PHP_EOL);
+	if (!file_exists($configfile)) {
+		fwrite(
+			STDERR,
+			'Config file does not exist.' . PHP_EOL . PHP_EOL
+		);
+		$show_config_file_template = true;
+	}
+} else {
+	fwrite(
+		STDERR,
+		'Please specify a config file.' . PHP_EOL . PHP_EOL
+	);
+	$show_config_file_template = true;
 }
 
+if ($show_config_file_template) {
+	fwrite(
+		STDERR,
+		'Create a file with the contents like:' . PHP_EOL . PHP_EOL . file_get_contents(__DIR__ . '/../tests/testdb2modelconf.php')
+	);
+
+	die(1);
+}
 // Configuration defaults
 $db_host = 'localhost';
 $db_port = 3306;
