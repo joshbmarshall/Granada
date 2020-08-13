@@ -58,7 +58,7 @@ abstract class BaseTimezoneTest extends \MyAppTest\ORMBaseClass {
 	 * @var string $field_name
 	 * @return string
 	 */
-	public static function fieldType($field_name) {
+	public function fieldType($field_name) {
 		$fields = array(
 			'id' => 'integer',
 			'datetime1' => 'datetime',
@@ -236,4 +236,46 @@ abstract class BaseTimezoneTest extends \MyAppTest\ORMBaseClass {
 	}
 
 
+	/**
+	 * Should we delete this record for real or just flag as deleted?
+	 * Uses the is_deleted field
+	 *
+	 * @return boolean
+	 */
+	public function fakeDelete() {
+		return false;
+	}
+
+	public static function field_tags($field) {
+		$tags = array(
+			'id' => array(
+
+			),
+			'datetime1' => array(
+
+			),
+			'datetime2' => array(
+
+			),
+			'datetime3' => array(
+
+			),
+			'datetime4' => array(
+
+			),
+			'datetime5' => array(
+
+			),
+			'date1' => array(
+
+			),
+			'time1' => array(
+
+			),
+		);
+		if (!array_key_exists($field, $tags)) {
+			return array();
+		}
+		return $tags[$field];
+	}
 }

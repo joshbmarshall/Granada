@@ -14,9 +14,9 @@ namespace MyAppTest;
  * @property string $name
  * @property integer $manufactor_id
  * @property integer $owner_id
- * @property bool $enabled
- * @property bool $stealth
- * @property bool $is_deleted
+ * @property boolean $enabled
+ * @property boolean $stealth
+ * @property boolean $is_deleted
  * @property integer $sort_order
  * @property string $created_at
  * @property \Cake\Chronos\Chronos $created_at_chronos
@@ -78,15 +78,15 @@ abstract class BaseCar extends \MyAppTest\ORMBaseClass {
 	 * @var string $field_name
 	 * @return string
 	 */
-	public static function fieldType($field_name) {
+	public function fieldType($field_name) {
 		$fields = array(
 			'id' => 'integer',
 			'name' => 'string',
 			'manufactor_id' => 'integer',
 			'owner_id' => 'integer',
-			'enabled' => 'bool',
-			'stealth' => 'bool',
-			'is_deleted' => 'bool',
+			'enabled' => 'boolean',
+			'stealth' => 'boolean',
+			'is_deleted' => 'boolean',
 			'sort_order' => 'integer',
 			'created_at' => 'datetime',
 			'updated_at' => 'datetime',
@@ -230,4 +230,52 @@ abstract class BaseCar extends \MyAppTest\ORMBaseClass {
 	}
 
 
+	/**
+	 * Should we delete this record for real or just flag as deleted?
+	 * Uses the is_deleted field
+	 *
+	 * @return boolean
+	 */
+	public function fakeDelete() {
+		return true;
+	}
+
+	public static function field_tags($field) {
+		$tags = array(
+			'id' => array(
+
+			),
+			'name' => array(
+
+			),
+			'manufactor_id' => array(
+
+			),
+			'owner_id' => array(
+
+			),
+			'enabled' => array(
+
+			),
+			'stealth' => array(
+
+			),
+			'is_deleted' => array(
+
+			),
+			'sort_order' => array(
+
+			),
+			'created_at' => array(
+
+			),
+			'updated_at' => array(
+
+			),
+		);
+		if (!array_key_exists($field, $tags)) {
+			return array();
+		}
+		return $tags[$field];
+	}
 }

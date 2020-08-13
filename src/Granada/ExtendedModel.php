@@ -12,8 +12,9 @@ namespace Granada;
  * @method string avg(string $column) Will return the average value of the chosen column.
  * @method string sum(string $column) Will return the sum of the values of the chosen column.
  * @method boolean delete_many() Delete all matching records
+ * @method boolean fakeDelete() Soft delete by setting the is_deleted flag
+ * @method string fieldType(string $field_name) What type of field is this attribute
  * @static boolean hasAttribute(string $field) Does this model have this attribute
- * @static string fieldType(string $field_name) What type of field is this attribute
  * @static mixed model() The starting point for all queries
  *
  */
@@ -296,9 +297,14 @@ class ExtendedModel extends Model {
      * @return bool Success
      * @throws \PDOException
      */
-    public function delete() {
+    public function delete($for_real = false) {
         $this->beforeDelete();
-        $success = parent::delete();
+        if ($this->fakeDelete() && !$for_real) {
+            $this->is_deleted = true;
+            $success = $this->save() ? true : false;
+        } else {
+            $success = parent::delete();
+        }
         $this->afterDelete();
         return $success;
     }

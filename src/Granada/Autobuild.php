@@ -223,7 +223,6 @@ class Autobuild extends ORM {
 
 		$structure = array();
 		$fieldnames = array();
-		$canSendMessage = false;
 		$deleteForReal = true;
 		foreach ($tablefields as $tablefield) {
 			if ($tablefield['Null'] == 'NO') {
@@ -427,11 +426,11 @@ class Autobuild extends ORM {
 				if ($length == '1') {
 					if (isset($tablefield['Default'])) {
 						$tftype = 'bool';
-						$doctype = 'bool';
+						$doctype = 'boolean';
 						$required = 'false';
 					} else {
 						$tftype = 'booltristate';
-						$doctype = 'bool';
+						$doctype = 'boolean';
 					}
 				} else {
 					$tftype = 'integer';
@@ -445,9 +444,6 @@ class Autobuild extends ORM {
 								$displayname = ucwords(str_replace('_', ' ', substr($tablefieldname, 0, -3)));
 							} else {
 								$displayname = ucwords(str_replace('_', ' ', $tablefieldname));
-							}
-							if ($belongsToModel == '\\Cognito\\User') {
-								$canSendMessage = $tablefieldname;
 							}
 						}
 					}
@@ -567,20 +563,8 @@ class Autobuild extends ORM {
 			$fieldnames[] = $tablefieldname;
 		}
 
-		if ((in_array('created_at', $fieldnames)) && (in_array('updated_at', $fieldnames))) {
-			$trackChangeTime = true;
-			$structure['created_at']['hidden_in_forms'] = true;
-			$structure['updated_at']['hidden_in_forms'] = true;
-		} else {
-			$trackChangeTime = false;
-		}
-
 		if ((in_array('root', $fieldnames)) && (in_array('level', $fieldnames)) && (in_array('lft', $fieldnames)) && (in_array('rgt', $fieldnames))) {
 			$nestedSet = true;
-			$structure['root']['hidden_in_forms'] = true;
-			$structure['lft']['hidden_in_forms'] = true;
-			$structure['rgt']['hidden_in_forms'] = true;
-			$structure['level']['hidden_in_forms'] = true;
 		} else {
 			$nestedSet = false;
 		}
@@ -622,8 +606,6 @@ class Autobuild extends ORM {
 			'structure' => $structure,
 			'hasMany' => $hasMany,
 			'belongsTo' => $belongsTo,
-			'trackChangeTime' => $trackChangeTime,
-			'canSendMessage' => $canSendMessage,
 			'deleteForReal' => $deleteForReal,
 			'nestedSet' => $nestedSet,
 		);

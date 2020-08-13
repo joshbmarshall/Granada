@@ -460,6 +460,41 @@ class ExtendedModelTest extends PHPUnit_Framework_TestCase {
         $this->assertSame($car->name, 'Car1');
     }
 
+    public function testBooleanType() {
+        $car = \MyAppTest\Car::model()
+            ->find_one(1);
+
+        $this->assertSame(1, $car->id);
+        $this->assertSame(true, $car->enabled);
+        $this->assertSame(false, $car->stealth);
+        $this->assertSame(false, $car->is_deleted);
+    }
+
+    public function testFakeDelete() {
+        $car = \MyAppTest\Car::model()
+            ->find_one(1);
+
+        $this->assertSame(false, $car->is_deleted);
+        $car->delete();
+
+        $car = \MyAppTest\Car::model()
+            ->clear_where()
+            ->find_one(1);
+        $this->assertSame(true, $car->is_deleted);
+        $this->assertSame(1, $car->id);
+    }
+
+    public function testFakeDeleteForced() {
+        $car = \MyAppTest\Car::model()
+            ->clear_where()
+            ->find_one(1);
+        $car->delete(true);
+
+        $car = \MyAppTest\Car::model()
+            ->find_one(1);
+        $this->assertSame(false, $car);
+    }
+
     public function testInsert() {
         \MyAppTest\Car::insert(array(
             array(

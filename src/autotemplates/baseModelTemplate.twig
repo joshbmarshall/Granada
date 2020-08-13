@@ -78,7 +78,7 @@ abstract class Base{{ modelname }} extends {{ modelToExtend }} {
 	 * @var string $field_name
 	 * @return string
 	 */
-	public static function fieldType($field_name) {
+	public function fieldType($field_name) {
 		$fields = array(
 {% for field in structure %}
 {% if (field.type == 'dob') or (field.type == 'date') or (field.type == 'datetime') or (field.type == 'time') %}
@@ -260,4 +260,31 @@ abstract class Base{{ modelname }} extends {{ modelToExtend }} {
 {% endif %}
 {% endfor %}
 
+	/**
+	 * Should we delete this record for real or just flag as deleted?
+	 * Uses the is_deleted field
+	 *
+	 * @return boolean
+	 */
+	public function fakeDelete() {
+{% if deleteForReal %}
+		return false;
+{% else %}
+		return true;
+{% endif %}
+	}
+
+	public static function field_tags($field) {
+		$tags = array(
+{% for field in structure %}
+			'{{ field.name }}' => array(
+
+			),
+{% endfor %}
+		);
+		if (!array_key_exists($field, $tags)) {
+			return array();
+		}
+		return $tags[$field];
+	}
 }
