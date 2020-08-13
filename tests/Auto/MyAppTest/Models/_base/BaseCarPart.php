@@ -142,18 +142,6 @@ abstract class BaseCarPart extends \MyAppTest\ORMBaseClass {
 	}
 
 	/**
-	 * Get the list of columns to show on the admin grid page
-	 *
-	 * @return array of database fields
-	 */
-	public static function adminColumns() {
-		return array(
-			'car_id',
-			'part_id',
-		);
-	}
-
-	/**
 	 * Check that the model has a field name
 	 *
 	 * @var string $field
@@ -189,16 +177,6 @@ abstract class BaseCarPart extends \MyAppTest\ORMBaseClass {
 	 * @return array list of fields
 	 */
 	public function datefields() {
-		return array(
-		);
-	}
-
-	/**
-	 * Get the list of columns to uppercase the first char
-	 *
-	 * @return array of database fields
-	 */
-	public static function ucFirstColumns() {
 		return array(
 		);
 	}

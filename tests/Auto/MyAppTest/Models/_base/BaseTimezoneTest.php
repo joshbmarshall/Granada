@@ -149,22 +149,6 @@ abstract class BaseTimezoneTest extends \MyAppTest\ORMBaseClass {
 	}
 
 	/**
-	 * Get the list of columns to show on the admin grid page
-	 *
-	 * @return array of database fields
-	 */
-	public static function adminColumns() {
-		return array(
-			'datetime1',
-			'datetime2',
-			'datetime3',
-			'datetime4',
-			'datetime5',
-			'date1',
-		);
-	}
-
-	/**
 	 * Check that the model has a field name
 	 *
 	 * @var string $field
@@ -248,16 +232,6 @@ abstract class BaseTimezoneTest extends \MyAppTest\ORMBaseClass {
 				'timezone_mode' => 'none',
 				'timezone_comparison_mode' => 'none',
 			),
-		);
-	}
-
-	/**
-	 * Get the list of columns to uppercase the first char
-	 *
-	 * @return array of database fields
-	 */
-	public static function ucFirstColumns() {
-		return array(
 		);
 	}
 

@@ -1,35 +1,35 @@
 <?php
 
 /**
- * This is the base model class for the database table '{{tablename}}'
+ * This is the base model class for the database table '{{ tablename }}'
  *
  * Do not modify this file, it is overwritten via the db2model script
- * If any changes are required, override them in the '{{namespace}}\{{modelname}}' class.
+ * If any changes are required, override them in the '{{ namespace }}\{{ modelname }}' class.
  */
 
 namespace {{ namespace }};
 
 /**
 {% for field in structure %}
- * @property {{field.doctype}} ${{field.name}}
+ * @property {{ field.doctype }} ${{ field.name }}
 {% if (field.type == 'json' or field.type == 'serialize') %}
- * @property array ${{field.name}}_decoded
+ * @property array ${{ field.name }}_decoded
 {% endif %}
 {% if (field.type == 'dob') or (field.type == 'date') or (field.type == 'datetime') or (field.type == 'time') %}
- * @property \Cake\Chronos\Chronos ${{field.name}}_chronos
+ * @property \Cake\Chronos\Chronos ${{ field.name }}_chronos
 {% endif %}
 {% endfor %}
 {% for field in belongsTo %}
- * @property \{{field.namespace}}\{{field.modelname}} ${{field.arvarname}}
+ * @property \{{ field.namespace }}\{{ field.modelname }} ${{ field.arvarname }}
 {% endfor %}
 {% for field in hasMany %}
- * @property \{{field.namespace}}\{{field.modelname}}[] ${{field.arvarname}}
+ * @property \{{ field.namespace }}\{{ field.modelname }}[] ${{ field.arvarname }}
 {% endfor %}
  *
- * @method \{{namespace}}\{{modelname}} save(boolean $ignore = false) Save and reload the model, optionally ignoring existing id (Use INSERT ON DUPLICATE KEY UPDATE query).
+ * @method \{{ namespace }}\{{ modelname }} save(boolean $ignore = false) Save and reload the model, optionally ignoring existing id (Use INSERT ON DUPLICATE KEY UPDATE query).
  */
-abstract class Base{{modelname}} extends {{ modelToExtend }} {
-    public static $_table = '{{tablename}}';
+abstract class Base{{ modelname }} extends {{ modelToExtend }} {
+    public static $_table = '{{ tablename }}';
 
 	/**
 	 * Starting point for all queries
@@ -40,22 +40,22 @@ abstract class Base{{modelname}} extends {{ modelToExtend }} {
 	}
 
 {% for field in belongsTo %}
-    public function {{field.arvarname}}() {
-        return $this->belongs_to('{{field.namespace}}\{{field.modelname}}', '{{field.varname}}');
+    public function {{ field.arvarname }}() {
+        return $this->belongs_to('{{ field.namespace }}\{{ field.modelname }}', '{{ field.varname }}');
     }
 
 {% endfor %}
 {% for field in hasMany %}
-    public function {{field.arvarname}}() {
-        return $this->has_many('{{field.namespace}}\{{field.modelname}}', '{{field.varname}}')->defaultFilter()->order_by_expr(\{{field.namespace}}\{{field.modelname}}::defaultOrder());
+    public function {{ field.arvarname }}() {
+        return $this->has_many('{{ field.namespace }}\{{ field.modelname }}', '{{ field.varname }}')->defaultFilter()->order_by_expr(\{{ field.namespace }}\{{ field.modelname }}::defaultOrder());
     }
 
     /**
-     * Get the field name of the {{field.modelname}} that links back to this {{modelname}}
+     * Get the field name of the {{ field.modelname }} that links back to this {{ modelname }}
      * @return string
      */
-    public function {{field.arvarname}}_refVar() {
-            return '{{field.varname}}';
+    public function {{ field.arvarname }}_refVar() {
+            return '{{ field.varname }}';
     }
 
 {% endfor %}
@@ -63,14 +63,14 @@ abstract class Base{{modelname}} extends {{ modelToExtend }} {
 	 * @return string The current namespace
 	 */
 	public function getNamespace() {
-		return '{{namespace}}';
+		return '{{ namespace }}';
 	}
 
 	/**
 	 * @return string The current model name
 	 */
 	public function getModelname() {
-		return '{{modelname}}';
+		return '{{ modelname }}';
 	}
 
 	/**
@@ -82,9 +82,9 @@ abstract class Base{{modelname}} extends {{ modelToExtend }} {
 		$fields = array(
 {% for field in structure %}
 {% if (field.type == 'dob') or (field.type == 'date') or (field.type == 'datetime') or (field.type == 'time') %}
-			'{{field.name}}' => '{{field.type}}',
+			'{{ field.name }}' => '{{ field.type }}',
 {% else %}
-			'{{field.name}}' => '{{field.doctype}}',
+			'{{ field.name }}' => '{{ field.doctype }}',
 {% endif %}
 {% endfor %}
 		);
@@ -100,7 +100,7 @@ abstract class Base{{modelname}} extends {{ modelToExtend }} {
 	 * @return string Table name
 	 */
 	public function tableName() {
-		return '{{tablename}}';
+		return '{{ tablename }}';
 	}
 
 	/**
@@ -109,7 +109,7 @@ abstract class Base{{modelname}} extends {{ modelToExtend }} {
 	 * @return string
 	 */
 	public static function humanName() {
-		return '{{humanName}}';
+		return '{{ humanName }}';
 	}
 
 	/**
@@ -118,7 +118,7 @@ abstract class Base{{modelname}} extends {{ modelToExtend }} {
 	 * @return string
 	 */
 	public static function humanNames() {
-		return \Granada\Autobuild::pluralize('{{humanName}}');
+		return \Granada\Autobuild::pluralize('{{ humanName }}');
 	}
 
 	/**
@@ -128,7 +128,7 @@ abstract class Base{{modelname}} extends {{ modelToExtend }} {
 		return array(
 {% for field in structure %}
 {% if field.unique %}
-			'{{field.name}}',
+			'{{ field.name }}',
 {% endif %}
 {% endfor %}
 		);
@@ -141,7 +141,7 @@ abstract class Base{{modelname}} extends {{ modelToExtend }} {
 {% if nestedSet %}
 		return 'root,lft';
 {% else %}
-		return '{{defaultorder}}';
+		return '{{ defaultorder }}';
 {% endif %}
 	}
 
@@ -149,21 +149,21 @@ abstract class Base{{modelname}} extends {{ modelToExtend }} {
 	 * The column used as the main identifier for the model
 	 */
 	public static function primaryColumn() {
-		return '{{representation}}';
+		return '{{ representation }}';
 	}
 
 	/**
 	 * The value of the main identifier for the model
 	 */
 	public function representation() {
-		return $this->{{representation}};
+		return $this->{{ representation }};
 	}
 
     /**
      * The columns used as part of the representation method
      */
     public static function representationColumns() {
-            return array('{{representation}}');
+            return array('{{ representation }}');
     }
 
 	/**
@@ -177,64 +177,6 @@ abstract class Base{{modelname}} extends {{ modelToExtend }} {
 	}
 
 	/**
-	 * Get the list of columns to show on the admin grid page
-	 *
-	 * @return array of database fields
-	 */
-	public static function adminColumns() {
-		return array(
-{% set continue = false %}
-{% set fieldcounter = 0 %}
-{% for field in structure %}
-{% if field.type == 'text' %}
-{% set continue = true %}
-{% endif %}
-{% if field.type == 'richtext' %}
-{% set continue = true %}
-{% endif %}
-{% if field.type == 'pagebuilder' %}
-{% set continue = true %}
-{% endif %}
-{% if field.type == 'formbuilder' %}
-{% set continue = true %}
-{% endif %}
-{% if field.type == 'html' %}
-{% set continue = true %}
-{% endif %}
-{% if field.type == 'css' %}
-{% set continue = true %}
-{% endif %}
-{% if field.type == 'js' %}
-{% set continue = true %}
-{% endif %}
-{% if field.type == 'json' %}
-{% set continue = true %}
-{% endif %}
-{% if field.type == 'jsonld' %}
-{% set continue = true %}
-{% endif %}
-{% if field.type == 'serialize' %}
-{% set continue = true %}
-{% endif %}
-{% if field.name == 'user_id' %}
-{% set continue = true %}
-{% endif %}
-{% if field.hidden_in_forms %}
-{% set continue = true %}
-{% endif %}
-{% if continue %}
-{% set continue = false %}
-{% else %}
-{% set fieldcounter = fieldcounter + 1 %}
-{% if (fieldcounter < 7) or (field.name == 'sort_order' ) or (field.name == 'stealth') or (field.name == 'enabled') %}
-			'{{field.name}}',
-{% endif %}
-{% endif %}
-{% endfor %}
-		);
-	}
-
-	/**
 	 * Check that the model has a field name
 	 *
 	 * @var string $field
@@ -243,7 +185,7 @@ abstract class Base{{modelname}} extends {{ modelToExtend }} {
 	public static function hasAttribute($field) {
 		return array_key_exists($field, array(
 {% for field in structure %}
-			'{{field.name}}' => true,
+			'{{ field.name }}' => true,
 {% endfor %}
 		));
 	}
@@ -253,11 +195,11 @@ abstract class Base{{modelname}} extends {{ modelToExtend }} {
 	 * Array has the property name as the keys
 	 *
 	 * @param array $data
-	 * @return \{{namespace}}\{{modelname}}
+	 * @return \{{ namespace }}\{{ modelname }}
 	 */
 	public function setAttributes($data) {
 		foreach ($data as $key => $val) {
-			if (\{{namespace}}\{{modelname}}::hasAttribute($key) && $this->{$key} !== $val) {
+			if (\{{ namespace }}\{{ modelname }}::hasAttribute($key) && $this->{$key} !== $val) {
 				$this->{$key} = $val;
 			}
 		}
@@ -273,48 +215,33 @@ abstract class Base{{modelname}} extends {{ modelToExtend }} {
 		return array(
 {% for field in structure %}
 {% if field.type == 'date' %}
-			'{{field.name}}' => array(
+			'{{ field.name }}' => array(
 				'type' => 'date',
 				'format' => 'Y-m-d',
-				'timezone_mode' => '{{field.timezone_mode}}',
-				'timezone_comparison_mode' => '{{field.timezone_comparison_mode}}',
+				'timezone_mode' => '{{ field.timezone_mode }}',
+				'timezone_comparison_mode' => '{{ field.timezone_comparison_mode }}',
 			),
 {% elseif field.type == 'dob' %}
-			'{{field.name}}' => array(
+			'{{ field.name }}' => array(
 				'type' => 'date',
 				'format' => 'Y-m-d',
-				'timezone_mode' => '{{field.timezone_mode}}',
-				'timezone_comparison_mode' => '{{field.timezone_comparison_mode}}',
+				'timezone_mode' => '{{ field.timezone_mode }}',
+				'timezone_comparison_mode' => '{{ field.timezone_comparison_mode }}',
 			),
 {% elseif field.type == 'datetime' %}
-			'{{field.name}}' => array(
+			'{{ field.name }}' => array(
 				'type' => 'datetime',
 				'format' => 'Y-m-d H:i:s',
-				'timezone_mode' => '{{field.timezone_mode}}',
-				'timezone_comparison_mode' => '{{field.timezone_comparison_mode}}',
+				'timezone_mode' => '{{ field.timezone_mode }}',
+				'timezone_comparison_mode' => '{{ field.timezone_comparison_mode }}',
 			),
 {% elseif field.type == 'time' %}
-			'{{field.name}}' => array(
+			'{{ field.name }}' => array(
 				'type' => 'time',
 				'format' => 'H:i:s',
-				'timezone_mode' => '{{field.timezone_mode}}',
-				'timezone_comparison_mode' => '{{field.timezone_comparison_mode}}',
+				'timezone_mode' => '{{ field.timezone_mode }}',
+				'timezone_comparison_mode' => '{{ field.timezone_comparison_mode }}',
 			),
-{% endif %}
-{% endfor %}
-		);
-	}
-
-	/**
-	 * Get the list of columns to uppercase the first char
-	 *
-	 * @return array of database fields
-	 */
-	public static function ucFirstColumns() {
-		return array(
-{% for field in structure %}
-{% if field.ucfirst %}
-			'{{field.name}}',
 {% endif %}
 {% endfor %}
 		);
@@ -322,8 +249,8 @@ abstract class Base{{modelname}} extends {{ modelToExtend }} {
 
 {% for field in structure %}
 {% if field.type == 'enum' %}
-	public static function enum_options_{{field.name}}() {
-		$optx = explode(',', '{{field.options}}');
+	public static function enum_options_{{ field.name }}() {
+		$optx = explode(',', '{{ field.options }}');
 		foreach ($optx as $idx => $opt) {
 			$optx[$idx] = str_replace('&#039;', '', $opt);
 		}

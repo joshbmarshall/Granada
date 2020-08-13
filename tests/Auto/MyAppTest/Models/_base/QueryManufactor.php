@@ -4,7 +4,6 @@
  * This is the base model class for the database table 'manufactor'
  *
  * Do not modify this file, it is overwritten via the db2model script
- * If any changes are required, override them in the 'MyAppTest\Manufactor' class.
  */
 
 namespace MyAppTest;

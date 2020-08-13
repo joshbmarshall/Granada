@@ -171,22 +171,6 @@ abstract class BaseCar extends \MyAppTest\ORMBaseClass {
 	}
 
 	/**
-	 * Get the list of columns to show on the admin grid page
-	 *
-	 * @return array of database fields
-	 */
-	public static function adminColumns() {
-		return array(
-			'manufactor_id',
-			'owner_id',
-			'enabled',
-			'stealth',
-			'is_deleted',
-			'sort_order',
-		);
-	}
-
-	/**
 	 * Check that the model has a field name
 	 *
 	 * @var string $field
@@ -242,16 +226,6 @@ abstract class BaseCar extends \MyAppTest\ORMBaseClass {
 				'timezone_mode' => 'user',
 				'timezone_comparison_mode' => 'none',
 			),
-		);
-	}
-
-	/**
-	 * Get the list of columns to uppercase the first char
-	 *
-	 * @return array of database fields
-	 */
-	public static function ucFirstColumns() {
-		return array(
 		);
 	}
 
