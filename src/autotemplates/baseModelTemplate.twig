@@ -278,7 +278,9 @@ abstract class Base{{ modelname }} extends {{ modelToExtend }} {
 		$tags = array(
 {% for field in structure %}
 			'{{ field.name }}' => array(
-
+{% for flag in field.comment_flags %}
+				'{{ flag }}',
+{% endfor %}
 			),
 {% endfor %}
 		);

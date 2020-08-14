@@ -243,34 +243,24 @@ abstract class BaseCar extends \MyAppTest\ORMBaseClass {
 	public static function field_tags($field) {
 		$tags = array(
 			'id' => array(
-
 			),
 			'name' => array(
-
 			),
 			'manufactor_id' => array(
-
 			),
 			'owner_id' => array(
-
 			),
 			'enabled' => array(
-
 			),
 			'stealth' => array(
-
 			),
 			'is_deleted' => array(
-
 			),
 			'sort_order' => array(
-
 			),
 			'created_at' => array(
-
 			),
 			'updated_at' => array(
-
 			),
 		);
 		if (!array_key_exists($field, $tags)) {

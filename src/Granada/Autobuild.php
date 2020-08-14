@@ -559,6 +559,7 @@ class Autobuild extends ORM {
 				'timezone_mode' => $timezone_mode,
 				'timezone_comparison_mode' => $timezone_comparison_mode,
 				'join_table_checkboxes' => $join_table_checkboxes,
+				'comment_flags' => array_keys($cflags),
 			);
 			$fieldnames[] = $tablefieldname;
 		}

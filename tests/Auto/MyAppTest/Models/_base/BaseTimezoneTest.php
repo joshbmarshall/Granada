@@ -249,28 +249,24 @@ abstract class BaseTimezoneTest extends \MyAppTest\ORMBaseClass {
 	public static function field_tags($field) {
 		$tags = array(
 			'id' => array(
-
 			),
 			'datetime1' => array(
-
 			),
 			'datetime2' => array(
-
+				'_timezone_none',
 			),
 			'datetime3' => array(
-
+				'_timezone_sitewide',
 			),
 			'datetime4' => array(
-
+				'_timezone_compare_user',
 			),
 			'datetime5' => array(
-
+				'_timezone_compare_sitewide',
 			),
 			'date1' => array(
-
 			),
 			'time1' => array(
-
 			),
 		);
 		if (!array_key_exists($field, $tags)) {

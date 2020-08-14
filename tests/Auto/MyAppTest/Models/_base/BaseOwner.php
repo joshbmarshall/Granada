@@ -195,10 +195,8 @@ abstract class BaseOwner extends \MyAppTest\ORMBaseClass {
 	public static function field_tags($field) {
 		$tags = array(
 			'id' => array(
-
 			),
 			'name' => array(
-
 			),
 		);
 		if (!array_key_exists($field, $tags)) {
