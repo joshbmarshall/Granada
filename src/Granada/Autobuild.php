@@ -243,37 +243,13 @@ class Autobuild extends ORM {
 			$commentwords = explode(' ', trim($comment));
 			$helptext = '';
 			$commentflags = '';
-			$formtab = 'General';
 			$cflags = array();
-			$file_suffix = '';
-			$formfeature = '';
-			$formpermission = '';
-			$formpermissionNamespace = '';
-			$formpermissionModel = '';
-			$join_table_checkboxes = '';
 			foreach ($commentwords as $commentword) {
 				if (substr($commentword, 0, 1) == '_') {
 					$commentflags .= ' ' . $commentword;
 					$cflags[$commentword] = true;
 				} else {
 					$helptext .= ' ' . $commentword;
-				}
-				if (substr($commentword, 0, 5) == '_tab_') {
-					$formtab = str_replace('_', ' ', substr($commentword, 5));
-				}
-				if (substr($commentword, 0, 13) == '_file_suffix_') {
-					$file_suffix = '.' . substr($commentword, 13);
-				}
-				if (substr($commentword, 0, 9) == '_feature_') {
-					$formfeature = substr($commentword, 9);
-				}
-				if (substr($commentword, 0, 12) == '_permission_') {
-					$testpermission = substr($commentword, 12);
-
-					list($formpermissionNamespace, $formpermissionModel, $formpermission) = explode('\\', $testpermission);
-				}
-				if (substr($commentword, 0, 23) == '_join_table_checkboxes_') {
-					$join_table_checkboxes = substr($commentword, 23);
 				}
 			}
 			$required = ($tablefield['Null'] == 'NO') ? 'true' : 'false';
@@ -318,20 +294,10 @@ class Autobuild extends ORM {
 			if ($tablefield['Key'] == 'UNI') {
 				$unique = true;
 			}
-			if (array_key_exists('_imagehidden', $cflags)) {
-				$imagehidden = true;
-			} else {
-				$imagehidden = false;
-			}
 			if (array_key_exists('_noxss', $cflags)) {
 				$ignorexss = true;
 			} else {
 				$ignorexss = false;
-			}
-			if (array_key_exists('_readonly', $cflags)) {
-				$readonly = true;
-			} else {
-				$readonly = false;
 			}
 			if (array_key_exists('_remove_prefix', $cflags)) {
 				$remove_prefix = true;
@@ -339,7 +305,6 @@ class Autobuild extends ORM {
 				$remove_prefix = false;
 			}
 			if ($tablefieldname == 'is_deleted') {
-				$readonly = true;
 				$deleteForReal = false;
 			}
 			if (array_key_exists('_capitalise', $cflags)) {
@@ -378,32 +343,9 @@ class Autobuild extends ORM {
 			} else if (array_key_exists('_telephone', $cflags)) {
 				$tftype = 'phone';
 				$doctype = 'string';
-			} else if (array_key_exists('_abn', $cflags)) {
-				$tftype = 'abn';
-				$doctype = 'string';
 			} else if (array_key_exists('_dob', $cflags)) {
 				$tftype = 'dob';
 				$doctype = 'date';
-			} else if (array_key_exists('_signature', $cflags)) {
-				$tftype = 'signature';
-				$doctype = '\Cognito\ImageOutput';
-				$ignorexss = true;
-			} else if (array_key_exists('_cameraupload', $cflags)) {
-				$tftype = 'cameraupload';
-				$doctype = '\Cognito\ImageOutput';
-				$ignorexss = true;
-			} else if (array_key_exists('_imageupload', $cflags)) {
-				$tftype = 'imageupload';
-				$doctype = '\Cognito\ImageOutput';
-				$ignorexss = true;
-			} else if (array_key_exists('_fileupload', $cflags)) {
-				if (array_key_exists('_compressfile', $cflags)) {
-					$tftype = 'fileuploadcompressed';
-				} else {
-					$tftype = 'fileupload';
-				}
-				$doctype = '\Cognito\FileOutput';
-				$ignorexss = true;
 			} else if ($first == 'timestamp') {
 				$tftype = 'datetime';
 				$doctype = 'string';
@@ -453,18 +395,7 @@ class Autobuild extends ORM {
 				$doctype = 'string';
 				$options = trim(substr($tablefield['Type'], 4), '()');
 			} else if ($first == 'varchar') {
-				if ($length == '1') {
-					$tftype = 'character';
-					$doctype = 'string';
-				} else if (array_key_exists('_modelpicker', $cflags)) {
-					$tftype = 'model';
-				} else if (array_key_exists('_colorpicker', $cflags)) {
-					$tftype = 'color';
-				} else if (array_key_exists('_colour', $cflags)) {
-					$tftype = 'color';
-				} else if (array_key_exists('_address', $cflags)) {
-					$tftype = 'address';
-				} else if ($length <= 255) {
+				if ($length <= 255) {
 					$tftype = 'string';
 					$doctype = 'string';
 				} else if ($length <= 2048) {
@@ -481,10 +412,6 @@ class Autobuild extends ORM {
 					$tftype = 'jsonld';
 				} else if (array_key_exists('_htmlsource', $cflags)) {
 					$tftype = 'html';
-				} else if (array_key_exists('_pagebuilder', $cflags)) {
-					$tftype = 'pagebuilder';
-				} else if (array_key_exists('_formbuilder', $cflags)) {
-					$tftype = 'formbuilder';
 				} else if (array_key_exists('_image', $cflags)) {
 					$tftype = 'image';
 					$ignorexss = true;
@@ -525,26 +452,15 @@ class Autobuild extends ORM {
 			if ($remove_prefix) {
 				$displayname = substr($displayname, strpos($displayname, ' ') + 1);
 			}
-			if ($tablefieldname == 'created_by_id') {
-				$readonly = true;
-			}
 			$structure[$tablefieldname] = array(
 				'name' => $tablefieldname,
 				'arvarname' => substr($tablefieldname, 0, -3),
 				'displayname' => $displayname,
 				'helptext' => trim($helptext),
-				'formtab' => $formtab,
-				'formpermissionNamespace' => $formpermissionNamespace,
-				'formpermissionModel' => $formpermissionModel,
-				'formpermission' => $formpermission,
-				'formfeature' => $formfeature,
-				'file_suffix' => $file_suffix,
 				'type' => $tftype,
 				'ignorexss' => $ignorexss,
 				'doctype' => $doctype,
 				'capitalise' => $capitalise,
-				'readonly' => $readonly,
-				'imagehidden' => $imagehidden,
 				'remove_prefix' => $remove_prefix,
 				'unique' => $unique,
 				'ucfirst' => $ucfirst,
@@ -558,7 +474,6 @@ class Autobuild extends ORM {
 				'default_value' => $tablefield['Default'],
 				'timezone_mode' => $timezone_mode,
 				'timezone_comparison_mode' => $timezone_comparison_mode,
-				'join_table_checkboxes' => $join_table_checkboxes,
 				'comment_flags' => array_keys($cflags),
 			);
 			$fieldnames[] = $tablefieldname;

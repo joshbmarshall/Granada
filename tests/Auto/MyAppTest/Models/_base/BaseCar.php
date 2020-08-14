@@ -240,6 +240,35 @@ abstract class BaseCar extends \MyAppTest\ORMBaseClass {
 		return true;
 	}
 
+	/**
+	 * Get the list of required fields
+	 * @param string $field the field name
+	 * @return string[] list of fields that cannot be blank
+	 */
+	public static function required_fields($field = null) {
+		$tags = array(
+			'id',
+			'name',
+			'manufactor_id',
+			'owner_id',
+			'enabled',
+			'stealth',
+			'is_deleted',
+			'sort_order',
+			'created_at',
+			'updated_at',
+		);
+		if (!array_key_exists($field, $tags)) {
+			return array();
+		}
+		return $tags[$field];
+	}
+
+	/**
+	 * Get the list of tags from the database comment
+	 * @param string $field the field name
+	 * @return string[] list of comment tags (_ prefixes)
+	 */
 	public static function field_tags($field) {
 		$tags = array(
 			'id' => array(
@@ -267,5 +296,30 @@ abstract class BaseCar extends \MyAppTest\ORMBaseClass {
 			return array();
 		}
 		return $tags[$field];
+	}
+
+	/**
+	 * Get the help text from the database comment.
+	 * It is basically the comment minus the tags (_ prefixes)
+	 * @param string $field the field name
+	 * @return string The field comment
+	 */
+	public static function field_help_text($field) {
+		$items = array(
+			'id' => '',
+			'name' => '',
+			'manufactor_id' => '',
+			'owner_id' => '',
+			'enabled' => '',
+			'stealth' => '',
+			'is_deleted' => '',
+			'sort_order' => '',
+			'created_at' => '',
+			'updated_at' => '',
+		);
+		if (!array_key_exists($field, $items)) {
+			return array();
+		}
+		return $items[$field];
 	}
 }

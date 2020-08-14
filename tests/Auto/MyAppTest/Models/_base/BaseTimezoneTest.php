@@ -246,6 +246,33 @@ abstract class BaseTimezoneTest extends \MyAppTest\ORMBaseClass {
 		return false;
 	}
 
+	/**
+	 * Get the list of required fields
+	 * @param string $field the field name
+	 * @return string[] list of fields that cannot be blank
+	 */
+	public static function required_fields($field = null) {
+		$tags = array(
+			'id',
+			'datetime1',
+			'datetime2',
+			'datetime3',
+			'datetime4',
+			'datetime5',
+			'date1',
+			'time1',
+		);
+		if (!array_key_exists($field, $tags)) {
+			return array();
+		}
+		return $tags[$field];
+	}
+
+	/**
+	 * Get the list of tags from the database comment
+	 * @param string $field the field name
+	 * @return string[] list of comment tags (_ prefixes)
+	 */
 	public static function field_tags($field) {
 		$tags = array(
 			'id' => array(
@@ -254,6 +281,7 @@ abstract class BaseTimezoneTest extends \MyAppTest\ORMBaseClass {
 			),
 			'datetime2' => array(
 				'_timezone_none',
+				'_tab_Time',
 			),
 			'datetime3' => array(
 				'_timezone_sitewide',
@@ -273,5 +301,28 @@ abstract class BaseTimezoneTest extends \MyAppTest\ORMBaseClass {
 			return array();
 		}
 		return $tags[$field];
+	}
+
+	/**
+	 * Get the help text from the database comment.
+	 * It is basically the comment minus the tags (_ prefixes)
+	 * @param string $field the field name
+	 * @return string The field comment
+	 */
+	public static function field_help_text($field) {
+		$items = array(
+			'id' => '',
+			'datetime1' => '',
+			'datetime2' => 'The date and time for stage 2',
+			'datetime3' => '',
+			'datetime4' => '',
+			'datetime5' => '',
+			'date1' => '',
+			'time1' => '',
+		);
+		if (!array_key_exists($field, $items)) {
+			return array();
+		}
+		return $items[$field];
 	}
 }
