@@ -331,4 +331,18 @@ abstract class Base{{ modelname }} extends {{ modelToExtend }} {
 		}
 		return $items[$field];
 	}
+
+	/**
+	 * Get the fields for edit forms
+	 * @return string[] form fields
+	 */
+	public static function form_fields() {
+		return array(
+{% for field in structure %}
+{% if field.hidden_in_forms == false %}
+			'{{ field.name }}',
+{% endif %}
+{% endfor %}
+		);
+	}
 }

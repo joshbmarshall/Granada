@@ -322,4 +322,22 @@ abstract class BaseCar extends \MyAppTest\ORMBaseClass {
 		}
 		return $items[$field];
 	}
+
+	/**
+	 * Get the fields for edit forms
+	 * @return string[] form fields
+	 */
+	public static function form_fields() {
+		return array(
+			'name',
+			'manufactor_id',
+			'owner_id',
+			'enabled',
+			'stealth',
+			'is_deleted',
+			'sort_order',
+			'created_at',
+			'updated_at',
+		);
+	}
 }

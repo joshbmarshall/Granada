@@ -242,4 +242,14 @@ abstract class BaseOwner extends \MyAppTest\ORMBaseClass {
 		}
 		return $items[$field];
 	}
+
+	/**
+	 * Get the fields for edit forms
+	 * @return string[] form fields
+	 */
+	public static function form_fields() {
+		return array(
+			'name',
+		);
+	}
 }
