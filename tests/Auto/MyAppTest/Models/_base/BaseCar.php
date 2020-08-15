@@ -318,6 +318,30 @@ abstract class BaseCar extends \MyAppTest\ORMBaseClass {
 	}
 
 	/**
+	 * Get the field default value
+	 * @param string $field
+	 * @return integer
+	 */
+	public static function field_default_value($field) {
+		$items = array(
+			'id' => '',
+			'name' => 'XXXX',
+			'manufactor_id' => '',
+			'owner_id' => '',
+			'enabled' => '1',
+			'stealth' => '0',
+			'is_deleted' => '1',
+			'sort_order' => '',
+			'created_at' => '',
+			'updated_at' => '',
+		);
+		if (!array_key_exists($field, $items)) {
+			return 0;
+		}
+		return $items[$field];
+	}
+
+	/**
 	 * Get the field max length
 	 * @param string $field
 	 * @return integer

@@ -242,6 +242,23 @@ abstract class BaseCarPart extends \MyAppTest\ORMBaseClass {
 	}
 
 	/**
+	 * Get the field default value
+	 * @param string $field
+	 * @return integer
+	 */
+	public static function field_default_value($field) {
+		$items = array(
+			'id' => '',
+			'car_id' => '',
+			'part_id' => '',
+		);
+		if (!array_key_exists($field, $items)) {
+			return 0;
+		}
+		return $items[$field];
+	}
+
+	/**
 	 * Get the field max length
 	 * @param string $field
 	 * @return integer

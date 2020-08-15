@@ -328,6 +328,23 @@ abstract class Base{{ modelname }} extends {{ modelToExtend }} {
 	}
 
 	/**
+	 * Get the field default value
+	 * @param string $field
+	 * @return integer
+	 */
+	public static function field_default_value($field) {
+		$items = array(
+{% for field in structure %}
+			'{{ field.name }}' => '{{ field.default_value }}',
+{% endfor %}
+		);
+		if (!array_key_exists($field, $items)) {
+			return 0;
+		}
+		return $items[$field];
+	}
+
+	/**
 	 * Get the field max length
 	 * @param string $field
 	 * @return integer

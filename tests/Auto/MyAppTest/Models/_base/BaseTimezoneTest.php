@@ -320,6 +320,28 @@ abstract class BaseTimezoneTest extends \MyAppTest\ORMBaseClass {
 	}
 
 	/**
+	 * Get the field default value
+	 * @param string $field
+	 * @return integer
+	 */
+	public static function field_default_value($field) {
+		$items = array(
+			'id' => '',
+			'datetime1' => '',
+			'datetime2' => '',
+			'datetime3' => '',
+			'datetime4' => '',
+			'datetime5' => '',
+			'date1' => '',
+			'time1' => '',
+		);
+		if (!array_key_exists($field, $items)) {
+			return 0;
+		}
+		return $items[$field];
+	}
+
+	/**
 	 * Get the field max length
 	 * @param string $field
 	 * @return integer

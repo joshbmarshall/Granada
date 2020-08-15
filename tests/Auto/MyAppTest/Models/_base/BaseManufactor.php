@@ -238,6 +238,22 @@ abstract class BaseManufactor extends \MyAppTest\ORMBaseClass {
 	}
 
 	/**
+	 * Get the field default value
+	 * @param string $field
+	 * @return integer
+	 */
+	public static function field_default_value($field) {
+		$items = array(
+			'id' => '',
+			'name' => '',
+		);
+		if (!array_key_exists($field, $items)) {
+			return 0;
+		}
+		return $items[$field];
+	}
+
+	/**
 	 * Get the field max length
 	 * @param string $field
 	 * @return integer
