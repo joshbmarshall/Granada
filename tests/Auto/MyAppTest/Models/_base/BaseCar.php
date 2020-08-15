@@ -133,7 +133,16 @@ abstract class BaseCar extends \MyAppTest\ORMBaseClass {
 	}
 
 	/**
+	 * Is this model a nestedSet ?
+	 * @return boolean
+	 */
+	public static function isNestedSet() {
+		return false;
+	}
+
+	/**
 	 * The column used as the main identifier for the model
+	 * @return string
 	 */
 	public static function defaultOrder() {
 		return 'sort_order';

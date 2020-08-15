@@ -135,7 +135,20 @@ abstract class Base{{ modelname }} extends {{ modelToExtend }} {
 	}
 
 	/**
+	 * Is this model a nestedSet ?
+	 * @return boolean
+	 */
+	public static function isNestedSet() {
+{% if nestedSet %}
+		return true;
+{% else %}
+		return false;
+{% endif %}
+	}
+
+	/**
 	 * The column used as the main identifier for the model
+	 * @return string
 	 */
 	public static function defaultOrder() {
 {% if nestedSet %}
