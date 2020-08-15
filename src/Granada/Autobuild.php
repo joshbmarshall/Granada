@@ -225,11 +225,6 @@ class Autobuild extends ORM {
 		$fieldnames = array();
 		$deleteForReal = true;
 		foreach ($tablefields as $tablefield) {
-			if ($tablefield['Null'] == 'NO') {
-				$notnull = true;
-			} else {
-				$notnull = false;
-			}
 			$trimmed = trim($tablefield['Type']);
 			if (strpos($trimmed, ')') === FALSE) {
 				$first = $trimmed;
@@ -256,6 +251,9 @@ class Autobuild extends ORM {
 
 			$tablefieldname = $tablefield['Field'];
 			$displayname = ucwords(str_replace('_', ' ', $tablefieldname));
+			if ($tablefieldname == 'id') {
+				$required = 'false';
+			}
 
 			$hasMany = self::getHasMany($tablename);
 			$belongsTo = self::getBelongsTo($tablename);
@@ -456,7 +454,6 @@ class Autobuild extends ORM {
 				'belongsToModelURL' => $belongsToModelURL,
 				'options' => $options,
 				'length' => $length,
-				'notnull' => $notnull,
 				'required' => $required,
 				'hidden_in_forms' => $hidden_in_forms,
 				'default_value' => $tablefield['Default'],

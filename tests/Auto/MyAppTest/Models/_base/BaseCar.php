@@ -241,30 +241,6 @@ abstract class BaseCar extends \MyAppTest\ORMBaseClass {
 	}
 
 	/**
-	 * Get the list of required fields
-	 * @param string $field the field name
-	 * @return string[] list of fields that cannot be blank
-	 */
-	public static function required_fields($field = null) {
-		$tags = array(
-			'id',
-			'name',
-			'manufactor_id',
-			'owner_id',
-			'enabled',
-			'stealth',
-			'is_deleted',
-			'sort_order',
-			'created_at',
-			'updated_at',
-		);
-		if (!array_key_exists($field, $tags)) {
-			return array();
-		}
-		return $tags[$field];
-	}
-
-	/**
 	 * Get the list of tags from the database comment
 	 * @param string $field the field name
 	 * @return string[] list of comment tags (_ prefixes)
@@ -372,7 +348,7 @@ abstract class BaseCar extends \MyAppTest\ORMBaseClass {
 	 */
 	public static function field_is_required($field) {
 		$items = array(
-			'id' => true,
+			'id' => false,
 			'name' => true,
 			'manufactor_id' => false,
 			'owner_id' => false,
