@@ -230,7 +230,8 @@ class Autobuild extends ORM {
 				$first = $trimmed;
 				$length = 0;
 			} else {
-				list($first, $length) = explode('(', trim($trimmed, ')'));
+				list($first, $length) = explode('(', trim(substr($trimmed, 0, strpos($trimmed, ')')), ')'));
+				$length = intval($length);
 			}
 
 			$comment = $tablefield['Comment'];
