@@ -257,4 +257,21 @@ abstract class BaseCarPart extends \MyAppTest\ORMBaseClass {
 			'part_id',
 		);
 	}
+
+	/**
+	 * Get the field max length
+	 * @param string $field
+	 * @return integer
+	 */
+	public static function field_length($field) {
+		$items = array(
+			'id' => 11,
+			'car_id' => 11,
+			'part_id' => 11,
+		);
+		if (!array_key_exists($field, $items)) {
+			return 0;
+		}
+		return $items[$field];
+	}
 }

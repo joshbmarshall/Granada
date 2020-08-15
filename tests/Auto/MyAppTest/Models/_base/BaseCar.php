@@ -340,4 +340,28 @@ abstract class BaseCar extends \MyAppTest\ORMBaseClass {
 			'updated_at',
 		);
 	}
+
+	/**
+	 * Get the field max length
+	 * @param string $field
+	 * @return integer
+	 */
+	public static function field_length($field) {
+		$items = array(
+			'id' => 11,
+			'name' => 190,
+			'manufactor_id' => 11,
+			'owner_id' => 11,
+			'enabled' => 1,
+			'stealth' => 1,
+			'is_deleted' => 1,
+			'sort_order' => 11,
+			'created_at' => 0,
+			'updated_at' => 0,
+		);
+		if (!array_key_exists($field, $items)) {
+			return 0;
+		}
+		return $items[$field];
+	}
 }

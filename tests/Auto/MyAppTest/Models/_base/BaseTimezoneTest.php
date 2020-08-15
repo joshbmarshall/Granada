@@ -281,7 +281,6 @@ abstract class BaseTimezoneTest extends \MyAppTest\ORMBaseClass {
 			),
 			'datetime2' => array(
 				'_timezone_none',
-				'_tab_Time',
 			),
 			'datetime3' => array(
 				'_timezone_sitewide',
@@ -313,7 +312,7 @@ abstract class BaseTimezoneTest extends \MyAppTest\ORMBaseClass {
 		$items = array(
 			'id' => '',
 			'datetime1' => '',
-			'datetime2' => 'The date and time for stage 2',
+			'datetime2' => '',
 			'datetime3' => '',
 			'datetime4' => '',
 			'datetime5' => '',
@@ -340,5 +339,27 @@ abstract class BaseTimezoneTest extends \MyAppTest\ORMBaseClass {
 			'date1',
 			'time1',
 		);
+	}
+
+	/**
+	 * Get the field max length
+	 * @param string $field
+	 * @return integer
+	 */
+	public static function field_length($field) {
+		$items = array(
+			'id' => 11,
+			'datetime1' => 0,
+			'datetime2' => 0,
+			'datetime3' => 0,
+			'datetime4' => 0,
+			'datetime5' => 0,
+			'date1' => 0,
+			'time1' => 0,
+		);
+		if (!array_key_exists($field, $items)) {
+			return 0;
+		}
+		return $items[$field];
 	}
 }

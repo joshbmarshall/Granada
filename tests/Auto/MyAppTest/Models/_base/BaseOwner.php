@@ -252,4 +252,20 @@ abstract class BaseOwner extends \MyAppTest\ORMBaseClass {
 			'name',
 		);
 	}
+
+	/**
+	 * Get the field max length
+	 * @param string $field
+	 * @return integer
+	 */
+	public static function field_length($field) {
+		$items = array(
+			'id' => 11,
+			'name' => 190,
+		);
+		if (!array_key_exists($field, $items)) {
+			return 0;
+		}
+		return $items[$field];
+	}
 }

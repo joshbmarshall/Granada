@@ -307,16 +307,6 @@ class Autobuild extends ORM {
 			if ($tablefieldname == 'is_deleted') {
 				$deleteForReal = false;
 			}
-			if (array_key_exists('_capitalise', $cflags)) {
-				$capitalise = true;
-			} else {
-				$capitalise = false;
-			}
-			if (array_key_exists('_ucfirst', $cflags)) {
-				$ucfirst = true;
-			} else {
-				$ucfirst = false;
-			}
 			if (array_key_exists('_currency', $cflags)) {
 				$tftype = 'currency';
 				$doctype = 'string';
@@ -460,10 +450,8 @@ class Autobuild extends ORM {
 				'type' => $tftype,
 				'ignorexss' => $ignorexss,
 				'doctype' => $doctype,
-				'capitalise' => $capitalise,
 				'remove_prefix' => $remove_prefix,
 				'unique' => $unique,
-				'ucfirst' => $ucfirst,
 				'belongsToModel' => $belongsToModel,
 				'belongsToModelURL' => $belongsToModelURL,
 				'options' => $options,
