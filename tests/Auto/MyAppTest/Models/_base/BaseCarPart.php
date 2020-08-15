@@ -274,4 +274,21 @@ abstract class BaseCarPart extends \MyAppTest\ORMBaseClass {
 		}
 		return $items[$field];
 	}
+
+	/**
+	 * Get whether the field is required
+	 * @param string $field
+	 * @return integer
+	 */
+	public static function field_is_required($field) {
+		$items = array(
+			'id' => true,
+			'car_id' => false,
+			'part_id' => false,
+		);
+		if (!array_key_exists($field, $items)) {
+			return 0;
+		}
+		return $items[$field];
+	}
 }

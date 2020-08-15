@@ -108,28 +108,28 @@ abstract class BasePart extends \MyAppTest\ORMBaseClass {
 	 * The column used as the main identifier for the model
 	 */
 	public static function defaultOrder() {
-		return 'id';
+		return 'name';
 	}
 
 	/**
 	 * The column used as the main identifier for the model
 	 */
 	public static function primaryColumn() {
-		return 'id';
+		return 'name';
 	}
 
 	/**
 	 * The value of the main identifier for the model
 	 */
 	public function representation() {
-		return $this->id;
+		return $this->name;
 	}
 
     /**
      * The columns used as part of the representation method
      */
     public static function representationColumns() {
-            return array('id');
+            return array('name');
     }
 
 	/**
@@ -262,6 +262,22 @@ abstract class BasePart extends \MyAppTest\ORMBaseClass {
 		$items = array(
 			'id' => 11,
 			'name' => 190,
+		);
+		if (!array_key_exists($field, $items)) {
+			return 0;
+		}
+		return $items[$field];
+	}
+
+	/**
+	 * Get whether the field is required
+	 * @param string $field
+	 * @return integer
+	 */
+	public static function field_is_required($field) {
+		$items = array(
+			'id' => true,
+			'name' => true,
 		);
 		if (!array_key_exists($field, $items)) {
 			return 0;

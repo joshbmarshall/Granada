@@ -362,4 +362,21 @@ abstract class Base{{ modelname }} extends {{ modelToExtend }} {
 		}
 		return $items[$field];
 	}
+
+	/**
+	 * Get whether the field is required
+	 * @param string $field
+	 * @return integer
+	 */
+	public static function field_is_required($field) {
+		$items = array(
+{% for field in structure %}
+			'{{ field.name }}' => {{ field.notnull ? 'true' : 'false' }},
+{% endfor %}
+		);
+		if (!array_key_exists($field, $items)) {
+			return 0;
+		}
+		return $items[$field];
+	}
 }

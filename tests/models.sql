@@ -15,7 +15,7 @@ CREATE TABLE part (
 
 CREATE TABLE car (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    name TEXT,
+    name TEXT NOT NULL,
     manufactor_id INTEGER,
     owner_id INTEGER,
     enabled INTEGER,

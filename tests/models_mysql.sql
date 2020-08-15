@@ -6,7 +6,7 @@ SET sql_mode = 'NO_AUTO_VALUE_ON_ZERO';
 DROP TABLE IF EXISTS `car`;
 CREATE TABLE `car` (
   `id` int(11) NOT NULL,
-  `name` varchar(190) DEFAULT NULL,
+  `name` varchar(190) NOT NULL,
   `manufactor_id` int(11) DEFAULT NULL,
   `owner_id` int(11) DEFAULT NULL,
   `enabled` tinyint(1) DEFAULT 1,
@@ -58,7 +58,7 @@ INSERT INTO `car_part` (`id`, `car_id`, `part_id`) VALUES
 DROP TABLE IF EXISTS `manufactor`;
 CREATE TABLE `manufactor` (
   `id` int(11) NOT NULL,
-  `name` varchar(190) DEFAULT NULL,
+  `name` varchar(190) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -69,7 +69,7 @@ INSERT INTO `manufactor` (`id`, `name`) VALUES
 DROP TABLE IF EXISTS `owner`;
 CREATE TABLE `owner` (
   `id` int(11) NOT NULL,
-  `name` varchar(190) DEFAULT NULL,
+  `name` varchar(190) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -82,7 +82,7 @@ INSERT INTO `owner` (`id`, `name`) VALUES
 DROP TABLE IF EXISTS `part`;
 CREATE TABLE `part` (
   `id` int(11) NOT NULL,
-  `name` varchar(190) DEFAULT NULL,
+  `name` varchar(190) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 

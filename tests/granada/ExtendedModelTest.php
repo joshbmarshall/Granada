@@ -628,11 +628,11 @@ class ExtendedModelTest extends PHPUnit_Framework_TestCase {
         $cars = \MyAppTest\Car::model()
             ->find_pairs_representation();
         $this->assertSame(array(
-            1 => 1,
-            2 => 2,
-            3 => 3,
-            4 => 4,
-            6 => 6,
+            1 => 'Car1',
+            2 => 'Car2',
+            3 => 'Car3',
+            4 => 'Car4',
+            6 => 'Car6',
         ), $cars);
     }
 
