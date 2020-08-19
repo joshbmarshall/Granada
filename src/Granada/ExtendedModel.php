@@ -329,4 +329,13 @@ class ExtendedModel extends Model {
     public function refresh() {
         $this->reload();
     }
+
+    /**
+     * Starting point for rendering this item as a form
+     * @return \Granada\Form
+     */
+    public function getForm() {
+        return new \Granada\Form($this);
+    }
+
 }

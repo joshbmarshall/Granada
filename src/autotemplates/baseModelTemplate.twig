@@ -292,7 +292,7 @@ abstract class Base{{ modelname }} extends {{ modelToExtend }} {
 	 * @param string $field the field name
 	 * @return string[] list of comment tags (_ prefixes)
 	 */
-	public static function field_tags($field) {
+	public function fieldTags($field) {
 		$tags = array(
 {% for field in structure %}
 			'{{ field.name }}' => array(
@@ -314,7 +314,7 @@ abstract class Base{{ modelname }} extends {{ modelToExtend }} {
 	 * @param string $field the field name
 	 * @return string The field comment
 	 */
-	public static function field_help_text($field) {
+	public function fieldHelpText($field) {
 		$items = array(
 {% for field in structure %}
 			'{{ field.name }}' => '{{ field.helptext }}',
@@ -330,7 +330,7 @@ abstract class Base{{ modelname }} extends {{ modelToExtend }} {
 	 * Get the fields for edit forms
 	 * @return string[] form fields
 	 */
-	public static function form_fields() {
+	public function formFields() {
 		return array(
 {% for field in structure %}
 {% if field.hidden_in_forms == false %}
@@ -345,7 +345,7 @@ abstract class Base{{ modelname }} extends {{ modelToExtend }} {
 	 * @param string $field
 	 * @return integer
 	 */
-	public static function field_default_value($field) {
+	public function fieldDefaultValue($field) {
 		$items = array(
 {% for field in structure %}
 			'{{ field.name }}' => '{{ field.default_value }}',
@@ -362,7 +362,7 @@ abstract class Base{{ modelname }} extends {{ modelToExtend }} {
 	 * @param string $field
 	 * @return integer
 	 */
-	public static function field_length($field) {
+	public function fieldLength($field) {
 		$items = array(
 {% for field in structure %}
 			'{{ field.name }}' => {{ field.length }},
@@ -377,16 +377,16 @@ abstract class Base{{ modelname }} extends {{ modelToExtend }} {
 	/**
 	 * Get whether the field is required
 	 * @param string $field
-	 * @return integer
+	 * @return boolean
 	 */
-	public static function field_is_required($field) {
+	public function fieldIsRequired($field) {
 		$items = array(
 {% for field in structure %}
 			'{{ field.name }}' => {{ field.required }},
 {% endfor %}
 		);
 		if (!array_key_exists($field, $items)) {
-			return 0;
+			return false;
 		}
 		return $items[$field];
 	}
