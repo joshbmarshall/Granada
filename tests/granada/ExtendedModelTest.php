@@ -38,7 +38,7 @@ class ExtendedModelTest extends PHPUnit_Framework_TestCase {
 
         // Enable logging
         ORM::configure('logging', true);
-        \MyAppTest\Car::create()->setDatabaseTimezone('Etc/UTC');
+        \Granada\ExtendedModel::setDatabaseTimezone('Etc/UTC');
     }
 
     public function tearDown() {
@@ -856,7 +856,7 @@ class ExtendedModelTest extends PHPUnit_Framework_TestCase {
 
     public function testTimezonesStoredBrisbane() {
         $timezoneTest = \MyAppTest\TimezoneTest::model()->find_one(1);
-        $timezoneTest->setDatabaseTimezone('Australia/Brisbane');
+        \Granada\ExtendedModel::setDatabaseTimezone('Australia/Brisbane');
 
         $this->assertSame('2020-08-11 06:47:18', $timezoneTest->datetime1);
         $this->assertSame('2020-08-11 06:47:18', $timezoneTest->datetime1_chronos->toDateTimeString());

@@ -49,7 +49,7 @@ class ExtendedModel extends Model {
      * @param string $timezone e.g. 'Etc/UTC'
      * @return void
      */
-    public function setDatabaseTimezone($timezone) {
+    public static function setDatabaseTimezone($timezone) {
         self::$_database_timezone = $timezone;
     }
 
