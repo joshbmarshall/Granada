@@ -334,8 +334,8 @@ class ExtendedModel extends Model {
      * Starting point for rendering this item as a form
      * @return \Granada\Form
      */
-    public function getForm() {
-        return new \Granada\Form($this);
+    public function getForm($class) {
+        return new $class($this);
     }
 
 }

@@ -309,6 +309,23 @@ abstract class Base{{ modelname }} extends {{ modelToExtend }} {
 	}
 
 	/**
+	 * Get the human name of the field.
+	 * @param string $field the field name
+	 * @return string The field human name
+	 */
+	public function fieldHumanName($field) {
+		$items = array(
+{% for field in structure %}
+			'{{ field.name }}' => '{{ field.displayname }}',
+{% endfor %}
+		);
+		if (!array_key_exists($field, $items)) {
+			return array();
+		}
+		return $items[$field];
+	}
+
+	/**
 	 * Get the help text from the database comment.
 	 * It is basically the comment minus the tags (_ prefixes)
 	 * @param string $field the field name
