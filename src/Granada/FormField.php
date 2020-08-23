@@ -79,6 +79,7 @@ class FormField {
             'name' => $this->name,
             'length' => $this->length,
             'required' => $this->required,
+            'readonly' => in_array('readonly', $this->tags ?: []) ? 'readonly' : '',
         ));
     }
 
