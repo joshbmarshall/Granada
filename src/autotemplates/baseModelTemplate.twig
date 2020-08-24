@@ -81,11 +81,7 @@ abstract class Base{{ modelname }} extends {{ modelToExtend }} {
 	public function fieldType($field_name) {
 		$fields = array(
 {% for field in structure %}
-{% if (field.type == 'dob') or (field.type == 'date') or (field.type == 'datetime') or (field.type == 'time') %}
-			'{{ field.name }}' => '{{ field.type }}',
-{% else %}
-			'{{ field.name }}' => '{{ field.doctype }}',
-{% endif %}
+		'{{ field.name }}' => '{{ field.type }}',
 {% endfor %}
 		);
 		if (!array_key_exists($field_name, $fields)) {
