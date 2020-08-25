@@ -89,7 +89,7 @@ class FormField {
         )));
         return $twig->render('template', array(
             'label' => $this->label,
-            'label_for' => '',
+            'label_for' => $this->name,
             'help' => $this->helptext,
             'content' => $this->renderContent(),
         ));
