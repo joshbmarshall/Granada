@@ -64,6 +64,7 @@ $models_output_dir = __DIR__ . '/Auto';
 $model_to_extend = '\MyApp\ORMBaseClass';
 $controller_model_to_extend = '\Auto\Controller';
 $use_namespaces = false;
+$namespace_prefixes = [];
 $default_namespace = 'MyApp';
 $plural_tables = [];
 
@@ -74,4 +75,4 @@ include($configfile);
 \Granada\ORM::configure('username', $db_username);
 \Granada\ORM::configure('password', $db_password);
 
-\Granada\Autobuild::doBuild($models_output_dir, $model_to_extend, $controller_model_to_extend, $use_namespaces, $default_namespace, $plural_tables);
+\Granada\Autobuild::doBuild($models_output_dir, $model_to_extend, $controller_model_to_extend, $use_namespaces, $namespace_prefixes, $default_namespace, $plural_tables);

@@ -5,6 +5,7 @@ namespace Granada;
 class Autobuild extends ORM {
 
 	private static $_use_namespaces = false;
+	private static $_namespace_prefixes = [];
 	private static $_default_namespace = 'Auto';
 	private static $_plural_tables = [];
 
@@ -20,14 +21,28 @@ class Autobuild extends ORM {
 		self::$_plural_tables = $val;
 	}
 
+	public static function setNamespacePrefixes($val) {
+		self::$_namespace_prefixes = $val;
+	}
+
+	private static function useNamespace($tablename) {
+		$tablename_split = preg_split("/_/", $tablename, 2);
+		if (self::$_use_namespaces || in_array($tablename_split[0], self::$_namespace_prefixes)) {
+			return true;
+		}
+		return false;
+	}
+
 	public static function getNamespace($tablename) {
-		if (self::$_use_namespaces) {
+		if (self::useNamespace($tablename)) {
 			if (strpos($tablename, '_') === FALSE) {
 				// Avoid tables that don't need a model as not a namespace
 				return '';
 			}
+		}
 
-			$tablename_split = preg_split("/_/", $tablename, 2);
+		$tablename_split = preg_split("/_/", $tablename, 2);
+		if (self::useNamespace($tablename)) {
 			$namespace = ucfirst($tablename_split[0]);
 		} else {
 			$namespace = self::$_default_namespace;
@@ -36,7 +51,7 @@ class Autobuild extends ORM {
 	}
 
 	public static function getModelName($tablename) {
-		if (self::$_use_namespaces) {
+		if (self::useNamespace($tablename)) {
 			if (strpos($tablename, '_') === FALSE) {
 				// Avoid tables that don't need a model as not a namespace
 				return '';
@@ -58,7 +73,7 @@ class Autobuild extends ORM {
 	}
 
 	public static function getHumanName($tablename) {
-		if (self::$_use_namespaces) {
+		if (self::useNamespace($tablename)) {
 			if (strpos($tablename, '_') === FALSE) {
 				// Avoid tables that don't need a model as not a namespace
 				return '';
@@ -571,12 +586,13 @@ class Autobuild extends ORM {
 	/**
 	 * Entrypoint
 	 */
-	public static function doBuild($models_output_dir, $model_to_extend, $controller_model_to_extend, $use_namespaces, $default_namespace, $plural_tables) {
+	public static function doBuild($models_output_dir, $model_to_extend, $controller_model_to_extend, $use_namespaces, $namespace_prefixes, $default_namespace, $plural_tables) {
 
 		$tables = \Granada\Autobuild::getTables($plural_tables);
 		\Granada\Autobuild::setPluralTables($plural_tables);
 		\Granada\Autobuild::setDefaultNamespace($default_namespace);
 		\Granada\Autobuild::setUseNamespaces($use_namespaces);
+		\Granada\Autobuild::setNamespacePrefixes($namespace_prefixes);
 
 		foreach ($tables as $table) {
 			$namespace = \Granada\Autobuild::getNamespace($table);
