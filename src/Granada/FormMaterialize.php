@@ -45,6 +45,14 @@ class FormMaterialize extends Form {
             return '<input type="hidden" name="{{ name }}" value="0" />' .
                 '<input type="checkbox" name="{{ name }}" value="1" {% if value %}checked{% endif %} {{ readonly }} />';
         }
+        if ($type == 'booltristate') {
+            return '
+    <select name="{{ name }}">
+      <option>Neither</option>
+      <option value="1" {% if value == 1 %} selected {% endif %}>Yes</option>
+      <option value="0" {% if value is same as("0") %} selected {% endif %}>No</option>
+    </select>';
+        }
         if ($length > 255 || $type == 'text') {
             // Use textarea
             return '<textarea name="{{ name }}" class="materialize-textarea" {{ readonly }}>{{ value|raw }}</textarea>';
