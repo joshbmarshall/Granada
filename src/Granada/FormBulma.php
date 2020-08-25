@@ -10,11 +10,13 @@ class FormBulma extends Form {
         <div class="field">
             <label for="{{ label_for }}" class="label">
                 {{ label }}
-                {% if help %}
-                <span class="badge badge-secondary" data-toggle="tooltip" title="{{ help }}">?</span>
-                {% endif %}
             </label>
+            <div class="control">
                 {{ content|raw }}
+            </div>
+            {% if help %}
+            <p class="help">{{ help }}</p>
+            {% endif %}
         </div>
 <?php
         return ob_get_clean();
@@ -42,6 +44,15 @@ class FormBulma extends Form {
         if ($type == 'boolean') {
             return '<input type="hidden" name="{{ name }}" value="0" />' .
                 '<input type="checkbox" name="{{ name }}" value="1" {% if value %}checked{% endif %} {{ readonly }} />';
+        }
+        if ($type == 'booltristate') {
+            return '<div class="select">
+            <select name="{{ name }}">
+            <option>Neither</option>
+            <option value="1" {% if value == 1 %} selected {% endif %}>Yes</option>
+            <option value="0" {% if value is same as("0") %} selected {% endif %}>No</option>
+            </select>
+            </div>';
         }
         if ($length > 255 || $type == 'text') {
             // Use textarea
