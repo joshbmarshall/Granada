@@ -340,6 +340,63 @@ abstract class Base{{ modelname }} extends {{ modelToExtend }} {
 	}
 
 	/**
+	 * Get the fields for admin list
+	 * @return string[] admin list fields
+	 */
+	public function adminFields() {
+		return array(
+{% set continue = false %}
+{% set fieldcounter = 0 %}
+{% for field in structure %}
+{% if field.type == 'text' %}
+{% set continue = true %}
+{% endif %}
+{% if field.type == 'richtext' %}
+{% set continue = true %}
+{% endif %}
+{% if field.type == 'pagebuilder' %}
+{% set continue = true %}
+{% endif %}
+{% if field.type == 'formbuilder' %}
+{% set continue = true %}
+{% endif %}
+{% if field.type == 'html' %}
+{% set continue = true %}
+{% endif %}
+{% if field.type == 'css' %}
+{% set continue = true %}
+{% endif %}
+{% if field.type == 'js' %}
+{% set continue = true %}
+{% endif %}
+{% if field.type == 'json' %}
+{% set continue = true %}
+{% endif %}
+{% if field.type == 'jsonld' %}
+{% set continue = true %}
+{% endif %}
+{% if field.type == 'serialize' %}
+{% set continue = true %}
+{% endif %}
+{% if field.name == 'user_id' %}
+{% set continue = true %}
+{% endif %}
+{% if field.hidden_in_forms %}
+{% set continue = true %}
+{% endif %}
+{% if continue %}
+{% set continue = false %}
+{% else %}
+{% set fieldcounter = fieldcounter + 1 %}
+{% if (fieldcounter < 7) or (field.name == 'sort_order' ) or (field.name == 'stealth') or (field.name == 'enabled') %}
+			'{{field.name}}',
+{% endif %}
+{% endif %}
+{% endfor %}
+		);
+	}
+
+	/**
 	 * Get the fields for edit forms
 	 * @return string[] form fields
 	 */
