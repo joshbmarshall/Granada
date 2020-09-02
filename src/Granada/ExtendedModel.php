@@ -15,6 +15,8 @@ namespace Granada;
  * @method boolean fakeDelete() Soft delete by setting the is_deleted flag
  * @method string fieldType(string $field_name) What type of field is this attribute
  * @method string refModel(string $column) The relevant model the field is linked to with foreign key
+ * @method string getNamespace() The name of the model namespace
+ * @method string getModelname() The relative name of the model
  * @static boolean hasAttribute(string $field) Does this model have this attribute
  * @static mixed model() The starting point for all queries
  *
