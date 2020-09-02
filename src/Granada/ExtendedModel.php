@@ -14,6 +14,7 @@ namespace Granada;
  * @method boolean delete_many() Delete all matching records
  * @method boolean fakeDelete() Soft delete by setting the is_deleted flag
  * @method string fieldType(string $field_name) What type of field is this attribute
+ * @method string refModel(string $column) The relevant model the field is linked to with foreign key
  * @static boolean hasAttribute(string $field) Does this model have this attribute
  * @static mixed model() The starting point for all queries
  *
