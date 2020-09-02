@@ -284,6 +284,21 @@ abstract class Base{{ modelname }} extends {{ modelToExtend }} {
 	}
 
 	/**
+	 * Get the model names for the lookup
+	 *
+	 * @param string name of the variable
+	 * @return string
+	 */
+	public static function refModel($varname) {
+{% for field in belongsTo %}
+		if ($varname == '{{field.varname}}') {
+			return '\{{field.namespace}}\{{field.modelname}}';
+		}
+{% endfor %}
+		return false;
+	}
+
+	/**
 	 * Get the list of tags from the database comment
 	 * @param string $field the field name
 	 * @return string[] list of comment tags (_ prefixes)
