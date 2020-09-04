@@ -53,7 +53,7 @@ class FormMaterialize extends Form {
       <option value="0" {% if value is same as("0") %} selected {% endif %}>No</option>
     </select>';
         }
-        if ($length > 255 || $type == 'text') {
+        if ($length > 255 || $length == 0 || $type == 'text') {
             // Use textarea
             return '<textarea name="{{ name }}" class="materialize-textarea" {{ readonly }}>{{ value|raw }}</textarea>';
         }
