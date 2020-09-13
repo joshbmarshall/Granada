@@ -36,9 +36,6 @@
     "scripts": {
         "test": "phpunit"
     },
-    "bin": [
-        "bin/db2model"
-    ],
     "replace": {
         "surt/granada": "*"
     },
